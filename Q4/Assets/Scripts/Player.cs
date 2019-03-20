@@ -12,6 +12,12 @@ public class Player : MonoBehaviour {
     float jumpSpeed = 10f;
     float moveSpeed = 3f;
 
+    //Input Variables
+    float xAxis = 0f;
+    float yAxis = 0f;
+    float xAxis2 = 0f;
+    float yAxis2 = 0f;
+
     //Define Reference Variables
     void OnEnable()
     {
@@ -33,9 +39,16 @@ public class Player : MonoBehaviour {
         bool right = Input.GetKey(KeyCode.RightArrow);
         bool left = Input.GetKey(KeyCode.LeftArrow);
 
+        //Controller Input Variables
+        xAxis = Input.GetAxis("Horizontal");
+        yAxis = Input.GetAxis("Vertical");
+        xAxis2 = Input.GetAxis("Horizontal2");
+        yAxis2 = Input.GetAxis("Vertical2");
+        
+
         if(po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
-            Debug.Log("REEEP");
+            //Debug.Log("REEEP");
         }
 
         //Jumping 
@@ -45,8 +58,21 @@ public class Player : MonoBehaviour {
         }
 
         //Horizontal Movement
-        if (right) po.hSpeed = moveSpeed;
-        else if (left) po.hSpeed = -moveSpeed;
-        else po.hSpeed = 0;
+        //if (right) po.hSpeed = moveSpeed;
+        //else if (left) po.hSpeed = -moveSpeed;
+        //else po.hSpeed = 0;
+
+        //Controller Test Movement
+        po.hSpeed = moveSpeed * xAxis;
+
+       
 	}
+
+    Vector2 CalcVelocity(float xPercent, float yPercent, float speed)
+    {
+        float returnX = speed * (xPercent / (Mathf.Abs(xPercent) + Mathf.Abs(yPercent)));
+        float returnY = speed * (yPercent / (Mathf.Abs(xPercent) + Mathf.Abs(yPercent)));
+
+        return new Vector2(returnX, returnY);
+    }
 }

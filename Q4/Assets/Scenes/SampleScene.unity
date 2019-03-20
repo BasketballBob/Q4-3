@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   col: {fileID: 0}
-  Gravity: 0
+  Gravity: 1
   GravRate: 20
   hSpeed: 0
   vSpeed: 0
