@@ -17,6 +17,8 @@ public class Player : MonoBehaviour {
     float yAxis = 0f;
     float xAxis2 = 0f;
     float yAxis2 = 0f;
+    float prevXAxis = 0f;
+    float prevYAxis = 0f;
 
     //Define Reference Variables
     void OnEnable()
@@ -52,10 +54,24 @@ public class Player : MonoBehaviour {
         }
 
         //Jumping 
-        if(up && po.PlaceMeeting(trans.position.x, trans.position.y-PhysicsObject.minMove, 0))
+        //if(up && po.PlaceMeeting(trans.position.x, trans.position.y-PhysicsObject.minMove, 0))
+        //{
+            //po.vSpeed = jumpSpeed;
+            //CalcVelocity(.5f,1,100);
+        //}
+
+        //Controller Jumping (Detected by flicking)
+        if(Mathf.Round(xAxis) == 0 && Mathf.Round(prevXAxis) != 0
+        || Mathf.Round(yAxis) == 0 && Mathf.Round(prevYAxis) != 0)
         {
-            po.vSpeed = jumpSpeed;
+            po.hSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).x;
+            po.vSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).y;
         }
+
+        if(xAxis != prevXAxis) Debug.Log(xAxis + " " + prevXAxis);
+        //Set Previous Axis Vars
+        prevXAxis = xAxis;
+        prevYAxis = yAxis;        
 
         //Horizontal Movement
         //if (right) po.hSpeed = moveSpeed;
@@ -63,15 +79,30 @@ public class Player : MonoBehaviour {
         //else po.hSpeed = 0;
 
         //Controller Test Movement
-        po.hSpeed = moveSpeed * xAxis;
+        //po.hSpeed = moveSpeed * xAxis;
 
        
 	}
 
     Vector2 CalcVelocity(float xPercent, float yPercent, float speed)
     {
+        //This Equation Returns A Velocity With A Magnitude of "speed" based on the ratio
+        //between xPercent and yPercent
+
         float returnX = speed * (xPercent / (Mathf.Abs(xPercent) + Mathf.Abs(yPercent)));
         float returnY = speed * (yPercent / (Mathf.Abs(xPercent) + Mathf.Abs(yPercent)));
+
+        //Edgecase: Cannot find returnX/Y accurately to speed without finding the ratio
+        //of return hypotenuse to speed (Don't entirely understand)
+        float initialSpeed = Mathf.Sqrt(Mathf.Pow(returnX, 2) + Mathf.Pow(returnY, 2));
+        returnX *= speed / initialSpeed;
+        returnY *= speed / initialSpeed;
+
+        //Avoid Returning Null
+        if (double.IsNaN((double)returnX)) returnX = 0;
+        if (double.IsNaN((double)returnY)) returnY = 0;
+
+        //Debug.Log("1 " + speed + " 2 " + Mathf.Sqrt(Mathf.Pow(returnX, 2) + Mathf.Pow(returnY, 2)));
 
         return new Vector2(returnX, returnY);
     }

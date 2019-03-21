@@ -222,6 +222,7 @@ MonoBehaviour:
   col: {fileID: 0}
   Gravity: 1
   GravRate: 20
+  CeaseHSpeedOnGround: 1
   hSpeed: 0
   vSpeed: 0
 --- !u!212 &1339292935

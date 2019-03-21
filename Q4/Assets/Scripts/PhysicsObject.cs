@@ -12,6 +12,7 @@ public class PhysicsObject : MonoBehaviour {
     //Modifiable Variables
     public bool Gravity = false;
     public float GravRate = 20f;
+    public bool CeaseHSpeedOnGround = false;
 
     //Physics Object Variables
     int CollisionType = 0;
@@ -28,9 +29,16 @@ public class PhysicsObject : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+
+
+        //Cease HSpeed On Ground (Specifically to prevent Granny from sliding)
+        if (CeaseHSpeedOnGround && col.PlaceMeeting(trans.position.x, trans.position.y - minMove, 0))
+        {
+            hSpeed = 0;
+        }
+
         //Horizontal Collision
-        if(hSpeed != 0)
+        if (hSpeed != 0)
         {
             if(!col.PlaceMeeting(trans.position.x+hSpeed*Time.deltaTime, trans.position.y, 0))
             {
@@ -76,14 +84,14 @@ public class PhysicsObject : MonoBehaviour {
             }
 
             //Cease VSpeed
-            if(col.PlaceMeeting(trans.position.x, trans.position.y + minMove * Sign(vSpeed), 0))
+            if (col.PlaceMeeting(trans.position.x, trans.position.y + minMove * Sign(vSpeed), 0))
             {
                 vSpeed = 0;
             }
         }
 	}
 
-    float Sign(float input)
+    public float Sign(float input)
     {
         if (input > 0) return 1;
         else if (input < 0) return -1;
