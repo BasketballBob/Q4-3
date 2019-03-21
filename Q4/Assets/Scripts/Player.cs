@@ -7,6 +7,9 @@ public class Player : MonoBehaviour {
     //Reference Variables
     Transform trans;
     PhysicsObject po;
+    public GameObject ProjectileReference;
+    public GameObject DirectionalReference;
+    public GameObject DirectionalReference2;
 
     //Player Variables
     float jumpSpeed = 10f;
@@ -19,6 +22,14 @@ public class Player : MonoBehaviour {
     float yAxis2 = 0f;
     float prevXAxis = 0f;
     float prevYAxis = 0f;
+    float prevXAxis2 = 0f;
+    float prevYAxis2 = 0f;
+    float prevUpdateAlarm = 0;
+    float prevUpdateTime = .025f;
+
+    //Attacking Variables
+    float attackAlarm = 0f;
+    float attackTime = 1f;
 
     //Define Reference Variables
     void OnEnable()
@@ -56,22 +67,57 @@ public class Player : MonoBehaviour {
         //Jumping 
         //if(up && po.PlaceMeeting(trans.position.x, trans.position.y-PhysicsObject.minMove, 0))
         //{
-            //po.vSpeed = jumpSpeed;
-            //CalcVelocity(.5f,1,100);
+        //po.vSpeed = jumpSpeed;
+        //CalcVelocity(.5f,1,100);
         //}
 
         //Controller Jumping (Detected by flicking)
-        if(Mathf.Round(xAxis) == 0 && Mathf.Round(prevXAxis) != 0
-        || Mathf.Round(yAxis) == 0 && Mathf.Round(prevYAxis) != 0)
+        if (po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
-            po.hSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).x;
-            po.vSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).y;
+            //if (Mathf.Round(xAxis) == 0 && Mathf.Round(prevXAxis) != 0
+            //|| Mathf.Round(yAxis) == 0 && Mathf.Round(prevYAxis) != 0)
+            if(Mathf.Round(Mathf.Sqrt(Mathf.Pow(xAxis,2)+Mathf.Pow(yAxis,2))) == 0
+            && Mathf.Round(Mathf.Sqrt(Mathf.Pow(prevXAxis, 2) + Mathf.Pow(prevYAxis, 2))) != 0)
+            {
+                po.hSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).x;
+                po.vSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).y;
+            }
         }
 
-        if(xAxis != prevXAxis) Debug.Log(xAxis + " " + prevXAxis);
-        //Set Previous Axis Vars
-        prevXAxis = xAxis;
-        prevYAxis = yAxis;        
+        //Projectile Delay
+        if (attackAlarm > 0) attackAlarm -= Time.deltaTime;
+        else
+        {
+            attackAlarm = 0;
+        }
+
+        //Projectile Flinging (Also detected by flicking)
+        if (attackAlarm == 0 && Mathf.Round(Mathf.Sqrt(Mathf.Pow(xAxis2, 2) + Mathf.Pow(yAxis2, 2))) == 0
+        && Mathf.Round(Mathf.Sqrt(Mathf.Pow(prevXAxis2, 2) + Mathf.Pow(prevYAxis2, 2))) != 0)
+        {
+            //Create Bullet
+            GameObject tvInst = Instantiate(ProjectileReference, trans.position, Quaternion.identity); 
+            tvInst.GetComponent<PhysicsObject>().hSpeed = -CalcVelocity(prevXAxis2, prevYAxis2, 10f).x;
+            tvInst.GetComponent<PhysicsObject>().vSpeed = -CalcVelocity(prevXAxis2, prevYAxis2, 10f).y;
+
+            //Set Attack Alarm 
+            attackAlarm = attackTime;
+        }
+
+        //if (xAxis != prevXAxis) Debug.Log(xAxis + " " + prevXAxis);
+
+        //Set Previous Axis Vars (Check For Flicking At Set Interval)
+        if (prevUpdateAlarm > 0) prevUpdateAlarm -= Time.deltaTime;
+        else
+        {
+            prevXAxis = xAxis;
+            prevYAxis = yAxis;
+            prevXAxis2 = xAxis2;
+            prevYAxis2 = yAxis2;
+
+            prevUpdateAlarm = prevUpdateTime;
+        }
+
 
         //Horizontal Movement
         //if (right) po.hSpeed = moveSpeed;
@@ -81,8 +127,16 @@ public class Player : MonoBehaviour {
         //Controller Test Movement
         //po.hSpeed = moveSpeed * xAxis;
 
-       
-	}
+
+        //Manage (Debugging) Directional Reference
+        DirectionalReference.GetComponent<Transform>().position = trans.position;
+        DirectionalReference.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis, xAxis)/Mathf.PI)*180);
+        DirectionalReference.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+        DirectionalReference2.GetComponent<Transform>().position = trans.position;
+        DirectionalReference2.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis2, xAxis2) / Mathf.PI) * 180);
+        DirectionalReference2.GetComponent<SpriteRenderer>().sortingOrder = 1;
+    }
 
     Vector2 CalcVelocity(float xPercent, float yPercent, float speed)
     {
