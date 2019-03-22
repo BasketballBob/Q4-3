@@ -13,11 +13,15 @@ public class PhysicsObject : MonoBehaviour {
     public int CollisionType = 0;
     public bool Gravity = false;
     public float GravRate = 20f;
+    public bool DestroyOnContact = false;
     public bool CeaseHSpeedOnGround = false;
 
     //Physics Object Variables   
     public float hSpeed;
     public float vSpeed;
+
+    //Housekeeping Variables
+    bool SetToDestroy = false;
 
     //Define Reference Variables
     void OnEnable()
@@ -30,6 +34,12 @@ public class PhysicsObject : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //Set To Destroy
+        //(used to destroy after collision)
+        if(SetToDestroy)
+        {
+            Destroy(gameObject);
+        }
 
         //Cease HSpeed On Ground (Specifically to prevent Granny from sliding)
         if (CeaseHSpeedOnGround && col.PlaceMeeting(trans.position.x, trans.position.y - minMove, 0) && vSpeed <= 0)
@@ -57,6 +67,9 @@ public class PhysicsObject : MonoBehaviour {
             if(col.PlaceMeeting(trans.position.x + minMove * Sign(hSpeed), trans.position.y, 0))
             {
                 hSpeed = 0;
+
+                //Play Collision Actions
+                OnCollisionActions();
             }
         }
 
@@ -87,6 +100,9 @@ public class PhysicsObject : MonoBehaviour {
             if (col.PlaceMeeting(trans.position.x, trans.position.y + minMove * Sign(vSpeed), 0))
             {
                 vSpeed = 0;
+
+                //Play Collision Actions
+                OnCollisionActions();
             }
         }
 	}
@@ -96,6 +112,15 @@ public class PhysicsObject : MonoBehaviour {
         if (input > 0) return 1;
         else if (input < 0) return -1;
         else return 0;
+    }
+
+    private void OnCollisionActions()
+    {
+       //Self Destruction
+       if(DestroyOnContact)
+       {
+           SetToDestroy = true;
+       }
     }
 
     public bool PlaceMeeting(float xPos, float yPos, int collisionType)

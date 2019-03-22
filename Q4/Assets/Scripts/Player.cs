@@ -13,7 +13,7 @@ public class Player : MonoBehaviour {
 
     //Player Variables
     float jumpSpeed = 10f;
-    float moveSpeed = 3f;
+    float bulletSpeed = 15f;
 
     //Input Variables
     float xAxis = 0f;
@@ -79,8 +79,8 @@ public class Player : MonoBehaviour {
             if(Mathf.Round(Mathf.Sqrt(Mathf.Pow(xAxis,2)+Mathf.Pow(yAxis,2))) == 0
             && Mathf.Round(Mathf.Sqrt(Mathf.Pow(prevXAxis, 2) + Mathf.Pow(prevYAxis, 2))) != 0)
             {
-                po.hSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).x;
-                po.vSpeed = -CalcVelocity(prevXAxis, prevYAxis, 10f).y;
+                po.hSpeed = -CalcVelocity(prevXAxis, prevYAxis, jumpSpeed).x;
+                po.vSpeed = -CalcVelocity(prevXAxis, prevYAxis, jumpSpeed).y;
             }
         }
 
@@ -97,8 +97,8 @@ public class Player : MonoBehaviour {
         {
             //Create Bullet
             GameObject tvInst = Instantiate(ProjectileReference, trans.position, Quaternion.identity); 
-            tvInst.GetComponent<PhysicsObject>().hSpeed = -CalcVelocity(prevXAxis2, prevYAxis2, 10f).x;
-            tvInst.GetComponent<PhysicsObject>().vSpeed = -CalcVelocity(prevXAxis2, prevYAxis2, 10f).y;
+            tvInst.GetComponent<PhysicsObject>().hSpeed = -CalcVelocity(prevXAxis2, prevYAxis2, bulletSpeed).x;
+            tvInst.GetComponent<PhysicsObject>().vSpeed = -CalcVelocity(prevXAxis2, prevYAxis2, bulletSpeed).y;
 
             //Set Attack Alarm 
             attackAlarm = attackTime;

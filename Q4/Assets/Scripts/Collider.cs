@@ -14,6 +14,8 @@ public class Collider : MonoBehaviour {
     //Collision Types:
     //-1 - Nothing 
     // 0 - Wall
+    // 1 - Player
+    // 2 - Enemy
 
     //Collider Variables 
     public int CollisionType;
@@ -104,6 +106,51 @@ public class Collider : MonoBehaviour {
         return returnVal;
     }
 
+    public GameObject InstanceMeeting(float xPos, float yPos, int collisionType)
+    {
+        //Initialize Variables
+        GameObject returnVal = null;
+
+        //Set Initial Position
+        Vector3 prevPos = this.trans.position;
+        this.trans.position = new Vector3(xPos, yPos);
+
+
+        //Check For Collision With All Colliders
+        foreach (Collider element in ColliderList)
+        {
+            //Check To See If Element Exists
+            if (element != null)
+            {
+                //Avoid Collision With Self
+                if (this != element)
+                {
+                    //Check Only For Input Collider Type
+                    if (element.CollisionType == collisionType)
+                    {
+                        //Rectangular Collision
+                        if (RectToRect(this, element))
+                        {
+                            returnVal = element.gameObject;
+                            break;
+                        }
+                    }
+                }
+            }
+            //Remove Null Element
+            else
+            {
+                ColliderList.Remove(element);
+            }
+        }
+
+
+        //Reset Position
+        this.trans.position = prevPos;
+
+        //Return Value
+        return returnVal;
+    }
 
     bool RectToRect(Collider Rect1, Collider Rect2)
     {
