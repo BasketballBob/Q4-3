@@ -152,6 +152,52 @@ public class Collider : MonoBehaviour {
         return returnVal;
     }
 
+    public GameObject NearestCollider(int collisionType)
+    {
+        //Initialize Variables
+        GameObject nearestInst = null;
+        float closestDist = Mathf.Pow(100, 3); //(Big Number)
+
+        //Check All Colliders Instances
+        foreach(Collider element in ColliderList)
+        {
+            //Check For Collision Type
+            if(element.CollisionType == collisionType)
+            {
+                //Make Sure Not To Check Self
+                if (element != this)
+                {
+                    //Reference Variables
+                    Transform inputTrans = element.GetComponent<Transform>();
+
+                    nearestInst = element.gameObject;
+
+                    //Check If Closest Instance
+                    if (Mathf.Sqrt(Mathf.Pow(trans.position.x - inputTrans.position.x, 2) + Mathf.Pow(trans.position.y - inputTrans.position.y, 2)) < closestDist)
+                    {
+                        nearestInst = element.gameObject;
+                        closestDist = Mathf.Sqrt(Mathf.Pow(trans.position.x - inputTrans.position.x, 2) + Mathf.Pow(trans.position.y - inputTrans.position.y, 2));
+                    }
+                }
+            }
+        }
+
+        //Return Nearest Inst
+        return nearestInst;
+    }
+
+    public static float TransDist(GameObject obj1, GameObject obj2)
+    {
+        //Initialize Variables
+        float x1 = obj1.GetComponent<Transform>().position.x;
+        float y1 = obj1.GetComponent<Transform>().position.y;
+        float x2 = obj2.GetComponent<Transform>().position.x;
+        float y2 = obj2.GetComponent<Transform>().position.y;
+
+        //Return Magnitude (Distance)
+        return Mathf.Sqrt(Mathf.Pow(x1 - x2, 2) + Mathf.Pow(y1 - y2, 2));
+    }
+
     bool RectToRect(Collider Rect1, Collider Rect2)
     {
         //Check To See If Rectangles Overlapping

@@ -10,7 +10,7 @@ public class TestSpawner : MonoBehaviour {
 
     //Spawner Variables
     float spawnAlarm = 0;
-    float spawnTime = 3f;
+    public float spawnTime = 3f;
 
     //Define Reference Variables
     private void OnEnable()

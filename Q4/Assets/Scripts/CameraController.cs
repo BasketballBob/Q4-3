@@ -19,12 +19,28 @@ public class CameraController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void LateUpdate () {
+
+        //Set Camera Destination
+        DestPos = new Vector2(followingObject.GetComponent<Transform>().position.x, DestPos.y);
 		
         //Move Towards Destination
         if(new Vector2(trans.position.x, trans.position.y) != DestPos)
         {
+            //Move Position
+            trans.position += new Vector3(SpeedPercent * (DestPos.x - trans.position.x), SpeedPercent * (DestPos.y - trans.position.y));
 
+            //Set Position Once Within Min Move
+            /*if(Mathf.Abs(DestPos.x - trans.position.x) < PhysicsObject.minMove) //Horizontal
+            {
+                trans.position = new Vector3(DestPos.x, trans.position.y, trans.position.z);
+            }
+            if (Mathf.Abs(DestPos.y - trans.position.y) < PhysicsObject.minMove) //Vertical
+            {
+                trans.position = new Vector3(trans.position.y, DestPos.y, trans.position.z);
+            }*/
         }
+
+        //trans.position = new Vector3(DestPos.x, DestPos.y, trans.position.z);
 	}
 }
