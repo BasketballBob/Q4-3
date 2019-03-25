@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour {
     public int health;
     public float moveSpeed;
     public float jumpSpeed;
-    public static Vector2 FollowPos = new Vector2(7, 0);
+    public static Vector2 FollowPos;
 
     //Define Reference Vars
     private void OnEnable()

@@ -10,6 +10,8 @@ public class CameraController : MonoBehaviour {
 
     //Camera Variables
     public Vector2 DestPos;
+    public float MinX = -10;
+    public float MaxX = 30;
     float SpeedPercent = .02f;
 
     //Define Reference Variables
@@ -39,6 +41,16 @@ public class CameraController : MonoBehaviour {
             {
                 trans.position = new Vector3(trans.position.y, DestPos.y, trans.position.z);
             }*/
+        }
+
+        //Clamp Camera Position
+        if(trans.position.x < MinX)
+        {
+            trans.position = new Vector3(MinX, trans.position.y, trans.position.z);
+        }
+        if(trans.position.x > MaxX)
+        {
+            trans.position = new Vector3(MaxX, trans.position.y, trans.position.z);
         }
 
         //trans.position = new Vector3(DestPos.x, DestPos.y, trans.position.z);

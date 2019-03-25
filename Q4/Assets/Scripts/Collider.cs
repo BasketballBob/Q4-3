@@ -16,6 +16,7 @@ public class Collider : MonoBehaviour {
     // 0 - Wall
     // 1 - Player
     // 2 - Enemy
+    // 3 - Tower
 
     //Collider Variables 
     public int CollisionType;
@@ -186,13 +187,13 @@ public class Collider : MonoBehaviour {
         return nearestInst;
     }
 
-    public static float TransDist(GameObject obj1, GameObject obj2)
+    public static float TransDist(Vector3 trans1, Vector3 trans2)
     {
         //Initialize Variables
-        float x1 = obj1.GetComponent<Transform>().position.x;
-        float y1 = obj1.GetComponent<Transform>().position.y;
-        float x2 = obj2.GetComponent<Transform>().position.x;
-        float y2 = obj2.GetComponent<Transform>().position.y;
+        float x1 = trans1.x;
+        float y1 = trans1.y;
+        float x2 = trans2.x;
+        float y2 = trans2.y;
 
         //Return Magnitude (Distance)
         return Mathf.Sqrt(Mathf.Pow(x1 - x2, 2) + Mathf.Pow(y1 - y2, 2));

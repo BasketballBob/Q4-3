@@ -64,11 +64,12 @@
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Collider.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\Player.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\Projectile.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\Tower.cs" />
     <Compile Include="Assets\Scripts\PhysicsObject.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\TestSpawner.cs" />
-    <Compile Include="Assets\Scripts\Tower.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Julien/Desktop/Q4/Q4/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
