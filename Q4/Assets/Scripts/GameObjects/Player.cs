@@ -7,10 +7,13 @@ public class Player : MonoBehaviour {
     //Reference Variables
     Transform trans;
     PhysicsObject po;
+    TowerRepository tr;
     public GameObject ProjectileReference;
     public GameObject DirectionalReference;
     public GameObject DirectionalReference2;
-    public GameObject TestTower;
+
+    //Tower References
+    GameObject tr_PeaShooter;
 
     //Player Variables
     float jumpSpeed = 10f;
@@ -32,16 +35,35 @@ public class Player : MonoBehaviour {
     float attackAlarm = 0f;
     float attackTime = 1f;
 
+    //Construction UI Vars
+    bool TowerUIInitialized = false;
+    GameObject[] TowerUIArray;
+    float TowerUIOffSetDist = 2;
+    int TowerArrayMax = 10;
+
     //Define Reference Variables
     void OnEnable()
     {
+        //Basic Reference Variables
         trans = GetComponent<Transform>();
         po = GetComponent<PhysicsObject>();
+        tr = GetComponent<TowerRepository>();
+
+        //Tower Reference Variables
+        tr_PeaShooter = tr.tr_PeaShooter;
     }
 
 	// Use this for initialization
 	void Start () {
-		
+
+        //Define Tower Array
+        TowerUIArray = new GameObject[TowerArrayMax];
+        for(int i = 0;i < TowerArrayMax; i++)
+        {
+            TowerUIArray[i] = new GameObject("Tower UI");
+            TowerUIArray[i].AddComponent<SpriteRenderer>();
+        }
+        
 	}
 	
 	// Update is called once per frame
@@ -61,10 +83,14 @@ public class Player : MonoBehaviour {
         bool PlaceTower = Input.GetKeyDown(KeyCode.Joystick1Button0);
 
 
+        //TOWER UI
+        ManageTowerConstructionUI(true, 5);
+
+
         //Test Tower Placement
         if (PlaceTower && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
-            GameObject tvInst = Instantiate(TestTower, trans.position, Quaternion.identity);
+            GameObject tvInst = Instantiate(tr_PeaShooter, trans.position, Quaternion.identity);
             tvInst.GetComponent<Transform>().position += new Vector3(0, tvInst.GetComponent<SpriteRenderer>().bounds.size.y / 2
             - GetComponent<Collider>().height/2);
             //Debug.Log(tvInst.GetComponent<SpriteRenderer>().bounds.size.y/2);
@@ -142,6 +168,59 @@ public class Player : MonoBehaviour {
         DirectionalReference2.GetComponent<Transform>().position = trans.position;
         DirectionalReference2.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis2, xAxis2) / Mathf.PI) * 180);
         DirectionalReference2.GetComponent<SpriteRenderer>().sortingOrder = 1;
+    }
+
+    void ManageTowerConstructionUI(bool Visible, int CurrentCount)
+    {
+        //Initialize Variables
+        if(!TowerUIInitialized)
+        {
+            //Define Tower UI Arrays
+            for(int i = 0;i < TowerArrayMax;i++)
+            {
+                //Set Tower UI Sprites
+                TowerUIArray[i].GetComponent<SpriteRenderer>().sprite = tr.TowerUISprites[0];
+            }
+
+            TowerUIInitialized = false;
+        }
+
+        //Manage UI Positions
+        if(Visible)
+        {
+            Debug.Log("Ding");
+            for(int i = 0;i < CurrentCount;i++)
+            {
+                //Calculate Position (Relative To Player)
+                float tvAngle = (360 / CurrentCount) * (i / CurrentCount);
+                Debug.Log(tvAngle);
+                Debug.Log(i);
+                Debug.Log((360 / CurrentCount) * ((i / CurrentCount) - 1));
+                float UIX = TowerUIOffSetDist * Mathf.Cos(tvAngle);
+                float UIY = TowerUIOffSetDist * Mathf.Sin(tvAngle);
+
+                //Set Position
+                TowerUIArray[i].GetComponent<Transform>().position = new Vector3(UIX + trans.position.x, 
+                UIY + trans.position.y, TowerUIArray[i].GetComponent<Transform>().position.z);
+            }
+        }
+
+        //Activated / Deactivated UI
+        for(int i = 0;i < TowerArrayMax;i++)
+        {
+            //Activate Instances
+            if (Visible && i < CurrentCount && !TowerUIArray[i].activeSelf)
+            {
+                TowerUIArray[i].SetActive(true);
+            }
+            //Deactivate Instance
+            else if(!Visible && !TowerUIArray[i].activeSelf ||
+            i >= CurrentCount && !TowerUIArray[i].activeSelf)
+            {
+                TowerUIArray[i].SetActive(false);
+            }
+        }
+
     }
 
     Vector2 CalcVelocity(float xPercent, float yPercent, float speed)
