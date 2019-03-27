@@ -1000,7 +1000,7 @@ PrefabInstance:
         type: 3}
       propertyPath: tr_PeaShooter_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 73121d55994309f428353a3c59d11ae0,
+      objectReference: {fileID: 21300000, guid: 1be2b3877cab9794886768f751261640,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a23b24a27ac6f948b8d52ea7945c7dc, type: 3}

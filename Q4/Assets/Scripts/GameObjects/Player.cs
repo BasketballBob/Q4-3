@@ -40,6 +40,7 @@ public class Player : MonoBehaviour {
     GameObject[] TowerUIArray;
     float TowerUIOffSetDist = 2;
     int TowerArrayMax = 10;
+    int TowerArrayCount = 5;
 
     //Define Reference Variables
     void OnEnable()
@@ -72,29 +73,37 @@ public class Player : MonoBehaviour {
         //Input Variables
         bool up = Input.GetKey(KeyCode.UpArrow);
         bool down = Input.GetKey(KeyCode.DownArrow);
-        bool right = Input.GetKey(KeyCode.RightArrow);
-        bool left = Input.GetKey(KeyCode.LeftArrow);
+        bool right = Input.GetKeyDown(KeyCode.RightArrow);
+        bool left = Input.GetKeyDown(KeyCode.LeftArrow);
 
         //Controller Input Variables
         xAxis = Input.GetAxis("Horizontal");
         yAxis = Input.GetAxis("Vertical");
         xAxis2 = Input.GetAxis("Horizontal2");
         yAxis2 = Input.GetAxis("Vertical2");
-        bool PlaceTower = Input.GetKeyDown(KeyCode.Joystick1Button0);
+        bool PlaceTower = Input.GetKey(KeyCode.Joystick1Button0);
 
 
-        //TOWER UI
-        ManageTowerConstructionUI(true, 5);
+        //TOWER UI (Testing)
+        if (right && TowerArrayCount < 10) TowerArrayCount++;
+        else if (left && TowerArrayCount > 0) TowerArrayCount--;
+        //ManageTowerConstructionUI(true, TowerArrayCount);
 
+        //Test Tower UI
+        if(PlaceTower)
+        {
+            ManageTowerConstructionUI(true, TowerArrayCount);
+        }
+        else ManageTowerConstructionUI(false, TowerArrayCount);
 
         //Test Tower Placement
-        if (PlaceTower && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
+        /*if (PlaceTower && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
             GameObject tvInst = Instantiate(tr_PeaShooter, trans.position, Quaternion.identity);
             tvInst.GetComponent<Transform>().position += new Vector3(0, tvInst.GetComponent<SpriteRenderer>().bounds.size.y / 2
             - GetComponent<Collider>().height/2);
             //Debug.Log(tvInst.GetComponent<SpriteRenderer>().bounds.size.y/2);
-        }
+        }*/
 
         //Jumping 
         //if(up && po.PlaceMeeting(trans.position.x, trans.position.y-PhysicsObject.minMove, 0))
@@ -188,20 +197,26 @@ public class Player : MonoBehaviour {
         //Manage UI Positions
         if(Visible)
         {
-            Debug.Log("Ding");
-            for(int i = 0;i < CurrentCount;i++)
+            //Determine Menu Selection Angle
+            float SelectionAngle = Mathf.Atan2(yAxis2, xAxis2);
+
+            //Manage All Active Instances
+            for (int i = 0;i < CurrentCount;i++)
             {
                 //Calculate Position (Relative To Player)
-                float tvAngle = (360 / CurrentCount) * (i / CurrentCount);
-                Debug.Log(tvAngle);
-                Debug.Log(i);
-                Debug.Log((360 / CurrentCount) * ((i / CurrentCount) - 1));
-                float UIX = TowerUIOffSetDist * Mathf.Cos(tvAngle);
-                float UIY = TowerUIOffSetDist * Mathf.Sin(tvAngle);
+                float tvAngleOffSet = 90;
+                float tvAngle = i * (360 / CurrentCount) + tvAngleOffSet; //72 * i + tvAngleOffSet; 
+                float UIX = TowerUIOffSetDist * Mathf.Cos((tvAngle/180) * Mathf.PI);
+                float UIY = TowerUIOffSetDist * Mathf.Sin((tvAngle/180) * Mathf.PI);
 
                 //Set Position
                 TowerUIArray[i].GetComponent<Transform>().position = new Vector3(UIX + trans.position.x, 
                 UIY + trans.position.y, TowerUIArray[i].GetComponent<Transform>().position.z);
+               
+                //Set Scale (Highlight Selected Circle)
+                //if(Mathf.Abs(SelectionAngle-tvAngle))
+                    //TowerUIArray.GetComponent<Transform>().scale
+
             }
         }
 
@@ -214,8 +229,8 @@ public class Player : MonoBehaviour {
                 TowerUIArray[i].SetActive(true);
             }
             //Deactivate Instance
-            else if(!Visible && !TowerUIArray[i].activeSelf ||
-            i >= CurrentCount && !TowerUIArray[i].activeSelf)
+            else if(!Visible && TowerUIArray[i].activeSelf ||
+            i >= CurrentCount && TowerUIArray[i].activeSelf)
             {
                 TowerUIArray[i].SetActive(false);
             }
