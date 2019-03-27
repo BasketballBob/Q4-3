@@ -77,11 +77,11 @@
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/Julien/Desktop/Q4/Q4/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/Julien/Desktop/Q4/Q4/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
       <HintPath>C:/Users/Julien/Desktop/Q4/Q4/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>C:/Users/Julien/Desktop/Q4/Q4/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.DataPrivacy">
       <HintPath>C:/Users/Julien/Desktop/Q4/Q4/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
