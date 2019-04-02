@@ -119,6 +119,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1016599417235586, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
+      propertyPath: m_Name
+      value: TestTower
+      objectReference: {fileID: 0}
     - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.49
@@ -150,6 +154,18 @@ PrefabInstance:
     - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
@@ -1001,6 +1017,12 @@ PrefabInstance:
       propertyPath: tr_PeaShooter_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 1be2b3877cab9794886768f751261640,
+        type: 3}
+    - target: {fileID: 2239420085958387071, guid: 5a23b24a27ac6f948b8d52ea7945c7dc,
+        type: 3}
+      propertyPath: tr_LaserRay
+      value: 
+      objectReference: {fileID: 6532254544023700311, guid: 2dab50cefd7ae3048aa7b0b36e72a5b5,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a23b24a27ac6f948b8d52ea7945c7dc, type: 3}

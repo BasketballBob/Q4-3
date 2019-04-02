@@ -6,20 +6,26 @@ public class Player : MonoBehaviour {
 
     //Reference Variables
     Transform trans;
+    SpriteRenderer sr;
     PhysicsObject po;
     TowerRepository tr;
     public GameObject ProjectileReference;
     public GameObject DirectionalReference;
     public GameObject DirectionalReference2;
+    GameObject ConstructingTower;
 
     //Tower References
-    GameObject tr_PeaShooter;
+    GameObject[] TowerReferences;
+    //GameObject tr_PeaShooter;
 
     //Player Variables
+    bool Suspended = false; //Equivalent to "Cutscene" var from "Functional Platformer" 
     float jumpSpeed = 10f;
     float bulletSpeed = 15f;
 
     //Input Variables
+    bool LockAxis = false;
+    bool LockAxis2 = false;
     float xAxis = 0f;
     float yAxis = 0f;
     float xAxis2 = 0f;
@@ -41,17 +47,34 @@ public class Player : MonoBehaviour {
     float TowerUIOffSetDist = 2;
     int TowerArrayMax = 10;
     int TowerArrayCount = 5;
+    float BuildAlarm = 0;
+    float BuildTime = 2f;
+    Color BuildRed = new Color(1f, 0f, 0f);
+    Color BuildGreen = new Color(0f, 1f, 0f);
+    float ReferenceAlpha = .5f;
+    float UIAlpha = .5f;
 
     //Define Reference Variables
     void OnEnable()
     {
         //Basic Reference Variables
         trans = GetComponent<Transform>();
+        sr = GetComponent<SpriteRenderer>();
         po = GetComponent<PhysicsObject>();
         tr = GetComponent<TowerRepository>();
 
         //Tower Reference Variables
-        tr_PeaShooter = tr.tr_PeaShooter;
+        TowerReferences = new GameObject[TowerArrayMax];
+        TowerReferences[0] = tr.tr_PeaShooter;
+        TowerReferences[1] = tr.tr_LaserRay;
+        TowerReferences[2] = tr.tr_LaserRay;
+        TowerReferences[3] = tr.tr_PeaShooter;
+        TowerReferences[4] = tr.tr_PeaShooter;
+        TowerReferences[5] = tr.tr_PeaShooter;
+        TowerReferences[6] = tr.tr_PeaShooter;
+        TowerReferences[7] = tr.tr_PeaShooter;
+        TowerReferences[8] = tr.tr_PeaShooter;
+        TowerReferences[9] = tr.tr_PeaShooter;
     }
 
 	// Use this for initialization
@@ -77,11 +100,22 @@ public class Player : MonoBehaviour {
         bool left = Input.GetKeyDown(KeyCode.LeftArrow);
 
         //Controller Input Variables
-        xAxis = Input.GetAxis("Horizontal");
-        yAxis = Input.GetAxis("Vertical");
-        xAxis2 = Input.GetAxis("Horizontal2");
-        yAxis2 = Input.GetAxis("Vertical2");
-        bool PlaceTower = Input.GetKey(KeyCode.Joystick1Button0);
+        //NOTE: The var LockAxis is always reset to false as to automatically 
+        //turn itself off once is stops recieving the signal to lock itself
+        if (!LockAxis) //Recieve Input From Axis 1
+        {
+            xAxis = Input.GetAxis("Horizontal");
+            yAxis = Input.GetAxis("Vertical");
+        }
+        else LockAxis = false;
+        if (!LockAxis2) //Recieve Input From Axis 1
+        {
+            xAxis2 = Input.GetAxis("Horizontal2");
+            yAxis2 = Input.GetAxis("Vertical2");
+        }
+        else LockAxis2 = false;
+        bool TowerUI = Mathf.Round(Input.GetAxis("LeftTrigger")) > 0;
+        bool BuildTower = Input.GetKey(KeyCode.Joystick1Button0);
 
 
         //TOWER UI (Testing)
@@ -89,12 +123,24 @@ public class Player : MonoBehaviour {
         else if (left && TowerArrayCount > 0) TowerArrayCount--;
         //ManageTowerConstructionUI(true, TowerArrayCount);
 
-        //Test Tower UI
-        if(PlaceTower)
+        //Active Tower UI
+        if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
-            ManageTowerConstructionUI(true, TowerArrayCount);
+            ManageTowerConstructionUI(true, TowerArrayCount, BuildTower);
+            Suspended = true;
         }
-        else ManageTowerConstructionUI(false, TowerArrayCount);
+        //Deactivated Tower UI
+        else
+        {
+            ManageTowerConstructionUI(false, TowerArrayCount, BuildTower);
+            Suspended = false;
+
+            //Destroy Unwanted Reference Tower
+            if(ConstructingTower != null)
+            {
+                Destroy(ConstructingTower);
+            }
+        }
 
         //Test Tower Placement
         /*if (PlaceTower && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
@@ -113,7 +159,7 @@ public class Player : MonoBehaviour {
         //}
 
         //Controller Jumping (Detected by flicking)
-        if (po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
+        if (po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !Suspended)
         {
             //if (Mathf.Round(xAxis) == 0 && Mathf.Round(prevXAxis) != 0
             //|| Mathf.Round(yAxis) == 0 && Mathf.Round(prevYAxis) != 0)
@@ -134,7 +180,7 @@ public class Player : MonoBehaviour {
 
         //Projectile Flinging (Also detected by flicking)
         if (attackAlarm == 0 && Mathf.Round(Mathf.Sqrt(Mathf.Pow(xAxis2, 2) + Mathf.Pow(yAxis2, 2))) == 0
-        && Mathf.Round(Mathf.Sqrt(Mathf.Pow(prevXAxis2, 2) + Mathf.Pow(prevYAxis2, 2))) != 0)
+        && Mathf.Round(Mathf.Sqrt(Mathf.Pow(prevXAxis2, 2) + Mathf.Pow(prevYAxis2, 2))) != 0 && !Suspended)
         {
             //Create Bullet
             GameObject tvInst = Instantiate(ProjectileReference, trans.position, Quaternion.identity); 
@@ -179,7 +225,7 @@ public class Player : MonoBehaviour {
         DirectionalReference2.GetComponent<SpriteRenderer>().sortingOrder = 1;
     }
 
-    void ManageTowerConstructionUI(bool Visible, int CurrentCount)
+    void ManageTowerConstructionUI(bool Visible, int CurrentCount, bool Building)
     {
         //Initialize Variables
         if(!TowerUIInitialized)
@@ -198,25 +244,137 @@ public class Player : MonoBehaviour {
         if(Visible)
         {
             //Determine Menu Selection Angle
-            float SelectionAngle = Mathf.Atan2(yAxis2, xAxis2);
+            float SelectionAngle = ((Mathf.Atan2(yAxis, xAxis) / Mathf.PI) * 180); // + 180;
+            SelectionAngle = (SelectionAngle + 360) % 360; //Use Modulo and OffSet to find only positive angles
+            int SelectedInst = -1;
+            float SelectDist = 360;
 
             //Manage All Active Instances
             for (int i = 0;i < CurrentCount;i++)
             {
                 //Calculate Position (Relative To Player)
                 float tvAngleOffSet = 90;
-                float tvAngle = i * (360 / CurrentCount) + tvAngleOffSet; //72 * i + tvAngleOffSet; 
+                float tvAngle = (i * (360 / CurrentCount) + tvAngleOffSet) % 360; //72 * i + tvAngleOffSet; 
                 float UIX = TowerUIOffSetDist * Mathf.Cos((tvAngle/180) * Mathf.PI);
                 float UIY = TowerUIOffSetDist * Mathf.Sin((tvAngle/180) * Mathf.PI);
 
                 //Set Position
                 TowerUIArray[i].GetComponent<Transform>().position = new Vector3(UIX + trans.position.x, 
                 UIY + trans.position.y, TowerUIArray[i].GetComponent<Transform>().position.z);
-               
-                //Set Scale (Highlight Selected Circle)
-                //if(Mathf.Abs(SelectionAngle-tvAngle))
-                    //TowerUIArray.GetComponent<Transform>().scale
 
+                //Set Scale (Highlight Selected Circle)
+                //if (Mathf.Abs(SelectionAngle - tvAngle) < (360 / CurrentCount) / 2
+                //|| Mathf.Abs(SelectionAngle + (tvAngle-360)) < (360 / CurrentCount) / 2)
+                //{
+                //TowerUIArray[i].GetComponent<Transform>().localScale = new Vector3(2, 2, 2);
+                //}
+                //else TowerUIArray[i].GetComponent<Transform>().localScale = new Vector3(1, 1, 1);
+
+                //Manage Scale 
+                TowerUIArray[i].GetComponent<Transform>().localScale = new Vector3(1, 1, 1);
+
+                //Manage Opacity
+                SpriteRenderer tvSR = TowerUIArray[i].GetComponent<SpriteRenderer>();
+                tvSR.color = new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, UIAlpha);
+
+                //Find Selected Instance
+                if (Mathf.Abs(SelectionAngle - tvAngle) < SelectDist)
+                {
+                    //Make Sure Input Exists
+                    if (Mathf.Round(xAxis) != 0 || Mathf.Round(yAxis) != 0)
+                    {
+                        SelectedInst = i;
+                        SelectDist = Mathf.Abs(SelectionAngle - tvAngle);
+                    }
+                }
+            }
+
+            //Determine Selected Instance (Manage Tower Reference)
+            if(SelectedInst != -1)
+            {
+                TowerUIArray[SelectedInst].GetComponent<Transform>().localScale = new Vector3(2, 2, 2);
+                
+                //Dispose Of Inaccurate Reference
+                if(ConstructingTower != null && ConstructingTower.GetComponent<SpriteRenderer>().sprite 
+                != TowerReferences[SelectedInst].GetComponent<SpriteRenderer>().sprite)
+                {
+                    Destroy(ConstructingTower);
+                }
+
+                //Spawn Opaque Tower Reference
+                if(ConstructingTower == null)
+                {
+                    ConstructingTower = Instantiate(TowerReferences[SelectedInst], trans.position, Quaternion.identity);
+                    ConstructingTower.GetComponent<Tower>().Activated = false;
+                }
+
+
+                //Manage Active Tower Reference
+                if(ConstructingTower != null)
+                {
+                    //Tower Reference Variables
+                    Transform tvTrans = ConstructingTower.GetComponent<Transform>();
+                    SpriteRenderer tvSR = ConstructingTower.GetComponent<SpriteRenderer>();
+
+                    //Set Tower Position Relative To Ground
+                    tvTrans.position = new Vector3(trans.position.x, trans.position.y - sr.bounds.size.y / 2 +
+                    ConstructingTower.GetComponent<SpriteRenderer>().bounds.size.y / 2, tvTrans.position.z);
+
+                    //Set Construction Color (Tell player if they are able to build the tower)
+                    if (ConstructingTower.GetComponent<Collider>().PlaceMeeting(tvTrans.position.x, tvTrans.position.y, 3))
+                    {
+                        tvSR.color = new Color(BuildRed.r, BuildRed.g, BuildRed.b, tvSR.color.a);
+                    }
+                    else tvSR.color = new Color(BuildGreen.r, BuildGreen.g, BuildGreen.b, tvSR.color.a);
+
+                    //Construct Tower 
+                    if (Building && !ConstructingTower.GetComponent<Collider>().PlaceMeeting(tvTrans.position.x, tvTrans.position.y, 3))
+                    {
+                        //Lock Axis 
+                        LockAxis = true;
+                        LockAxis2 = true;
+
+                        //Construction Opacity (Transitioning Opacity and Transitiong Color (BuildGreen to White)
+                        tvSR.color = new Color(1 + (BuildGreen.r - 1) * (BuildAlarm) / BuildTime,
+                        1 + (BuildGreen.g - 1) * (BuildAlarm) / BuildTime,
+                        1 + (BuildGreen.b - 1) * (BuildAlarm) / BuildTime, 
+                        ReferenceAlpha + (1-ReferenceAlpha) * (BuildTime-BuildAlarm) / BuildTime);
+
+                        //Deduct Build Alarm
+                        if (BuildAlarm-Time.deltaTime > 0)
+                        {
+                            BuildAlarm -= Time.deltaTime;
+                        }
+                        //Finish Constructing Tower
+                        else
+                        {
+                            //Set Constructed Tower Variables
+                            ConstructingTower.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                            ConstructingTower.GetComponent<Tower>().Activated = true;
+
+                            //Detach Instance From Reference
+                            ConstructingTower = null;
+
+                            //Reset Build Alarm
+                            BuildAlarm = BuildTime;
+                        }
+                    }
+                    //Default Values
+                    else
+                    {
+                        //Default Opacity 
+                        tvSR.color = new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, ReferenceAlpha);
+
+                        //Reset Construction Alarm
+                        BuildAlarm = BuildTime;
+                    }
+                }
+
+            }
+            //Rid Of Unused Tower Reference
+            else if(ConstructingTower != null)
+            {
+                Destroy(ConstructingTower);
             }
         }
 
