@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
     //GameObject tr_PeaShooter;
 
     //Player Variables
+    public int Cash = 300;
     bool Suspended = false; //Equivalent to "Cutscene" var from "Functional Platformer" 
     float jumpSpeed = 10f;
     float bulletSpeed = 15f;
@@ -122,6 +123,9 @@ public class Player : MonoBehaviour {
         if (right && TowerArrayCount < 10) TowerArrayCount++;
         else if (left && TowerArrayCount > 0) TowerArrayCount--;
         //ManageTowerConstructionUI(true, TowerArrayCount);
+
+        //TESTING PLAYER CURRENCY
+        //Debug.Log(Cash);
 
         //Active Tower UI
         if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
@@ -315,30 +319,33 @@ public class Player : MonoBehaviour {
                     //Tower Reference Variables
                     Transform tvTrans = ConstructingTower.GetComponent<Transform>();
                     SpriteRenderer tvSR = ConstructingTower.GetComponent<SpriteRenderer>();
+                    Tower tvTower = ConstructingTower.GetComponent<Tower>();
 
                     //Set Tower Position Relative To Ground
                     tvTrans.position = new Vector3(trans.position.x, trans.position.y - sr.bounds.size.y / 2 +
                     ConstructingTower.GetComponent<SpriteRenderer>().bounds.size.y / 2, tvTrans.position.z);
 
                     //Set Construction Color (Tell player if they are able to build the tower)
-                    if (ConstructingTower.GetComponent<Collider>().PlaceMeeting(tvTrans.position.x, tvTrans.position.y, 3))
+                    if (ConstructingTower.GetComponent<Collider>().PlaceMeeting(tvTrans.position.x, tvTrans.position.y, 3)
+                    || ConstructingTower.GetComponent<Tower>().Cost > Cash)
                     {
-                        tvSR.color = new Color(BuildRed.r, BuildRed.g, BuildRed.b, tvSR.color.a);
+                        tvTower.SetColor(new Color(BuildRed.r, BuildRed.g, BuildRed.b, tvSR.color.a));
                     }
-                    else tvSR.color = new Color(BuildGreen.r, BuildGreen.g, BuildGreen.b, tvSR.color.a);
+                    else tvTower.SetColor(new Color(BuildGreen.r, BuildGreen.g, BuildGreen.b, tvSR.color.a));
 
                     //Construct Tower 
-                    if (Building && !ConstructingTower.GetComponent<Collider>().PlaceMeeting(tvTrans.position.x, tvTrans.position.y, 3))
+                    if (Building && !ConstructingTower.GetComponent<Collider>().PlaceMeeting(tvTrans.position.x, tvTrans.position.y, 3)
+                    && Cash >= ConstructingTower.GetComponent<Tower>().Cost)
                     {
                         //Lock Axis 
                         LockAxis = true;
                         LockAxis2 = true;
 
                         //Construction Opacity (Transitioning Opacity and Transitiong Color (BuildGreen to White)
-                        tvSR.color = new Color(1 + (BuildGreen.r - 1) * (BuildAlarm) / BuildTime,
+                        tvTower.SetColor(new Color(1 + (BuildGreen.r - 1) * (BuildAlarm) / BuildTime,
                         1 + (BuildGreen.g - 1) * (BuildAlarm) / BuildTime,
                         1 + (BuildGreen.b - 1) * (BuildAlarm) / BuildTime, 
-                        ReferenceAlpha + (1-ReferenceAlpha) * (BuildTime-BuildAlarm) / BuildTime);
+                        ReferenceAlpha + (1-ReferenceAlpha) * (BuildTime-BuildAlarm) / BuildTime));
 
                         //Deduct Build Alarm
                         if (BuildAlarm-Time.deltaTime > 0)
@@ -348,13 +355,16 @@ public class Player : MonoBehaviour {
                         //Finish Constructing Tower
                         else
                         {
+                            //Deduct Cash
+                            Cash -= ConstructingTower.GetComponent<Tower>().Cost;
+
                             //Set Constructed Tower Variables
                             ConstructingTower.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
                             ConstructingTower.GetComponent<Tower>().Activated = true;
 
                             //Detach Instance From Reference
                             ConstructingTower = null;
-
+                           
                             //Reset Build Alarm
                             BuildAlarm = BuildTime;
                         }
@@ -363,7 +373,7 @@ public class Player : MonoBehaviour {
                     else
                     {
                         //Default Opacity 
-                        tvSR.color = new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, ReferenceAlpha);
+                        tvTower.SetColor(new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, ReferenceAlpha));
 
                         //Reset Construction Alarm
                         BuildAlarm = BuildTime;

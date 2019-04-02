@@ -171,7 +171,7 @@ public class Collider : MonoBehaviour {
                     //Reference Variables
                     Transform inputTrans = element.GetComponent<Transform>();
 
-                    nearestInst = element.gameObject;
+                    //nearestInst = element.gameObject;
 
                     //Check If Closest Instance
                     if (Mathf.Sqrt(Mathf.Pow(trans.position.x - inputTrans.position.x, 2) + Mathf.Pow(trans.position.y - inputTrans.position.y, 2)) < closestDist)
