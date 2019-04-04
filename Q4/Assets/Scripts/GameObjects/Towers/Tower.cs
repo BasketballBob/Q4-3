@@ -51,7 +51,7 @@ public class Tower : MonoBehaviour {
         }
 
         //Detect Closest Target
-        target = col.NearestCollider(2);
+        target = col.NearestCollider(trans.position.x, trans.position.y, 2);
 
 	}
 

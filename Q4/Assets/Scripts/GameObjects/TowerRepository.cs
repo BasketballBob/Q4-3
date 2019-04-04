@@ -12,7 +12,7 @@ public class TowerRepository : MonoBehaviour
     // (Sync Array Size With Player Values) \/ \/ \/
     int TowerUISpriteCount = 10;
     public Sprite[] TowerUISprites = new Sprite[10];
-
+    public Sprite[] EditingUISprites = new Sprite[10];
 
     //Pea Shooter
     public GameObject tr_PeaShooter;
@@ -29,6 +29,12 @@ public class TowerRepository : MonoBehaviour
         //Packup Tower UI Sprite Array
         TowerUISprites[0] = tr_PeaShooter_Sprite;
         TowerUISprites[1] = tr_LaserRay_Sprite;
+
+        //Packup Editing UI Sprite Array
+        for (int i = 0; i < 10; i++)
+        {
+            EditingUISprites[i] = tr_PeaShooter_Sprite;
+        }
     }
 
 }

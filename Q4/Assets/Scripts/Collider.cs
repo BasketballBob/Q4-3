@@ -153,11 +153,15 @@ public class Collider : MonoBehaviour {
         return returnVal;
     }
 
-    public GameObject NearestCollider(int collisionType)
+    public GameObject NearestCollider(float x, float y, int collisionType)
     {
         //Initialize Variables
         GameObject nearestInst = null;
         float closestDist = Mathf.Pow(100, 3); //(Big Number)
+
+        //Set Comparison Position
+        Vector3 prevPos = GetComponent<Transform>().position;
+        GetComponent<Transform>().position = new Vector3(x, y, GetComponent<Transform>().position.z);
 
         //Check All Colliders Instances
         foreach(Collider element in ColliderList)
@@ -182,6 +186,9 @@ public class Collider : MonoBehaviour {
                 }
             }
         }
+
+        //Reset Position
+        GetComponent<Transform>().position = prevPos;
 
         //Return Nearest Inst
         return nearestInst;

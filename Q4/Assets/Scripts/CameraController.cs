@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour {
 
     //Camera Variables
     public Vector2 DestPos;
+    Vector2 OverrideDestPos;
     public float MinX = -10;
     public float MaxX = 30;
     float SpeedPercent = .02f;
@@ -23,14 +24,19 @@ public class CameraController : MonoBehaviour {
     // Update is called once per frame
     void LateUpdate () {
 
-        //Set Camera Destination
-        DestPos = new Vector2(followingObject.GetComponent<Transform>().position.x, DestPos.y);
+        //Set Camera Destination (Follows object unless overriden by "OverrideDestPos")
+        if (OverrideDestPos != new Vector2())
+        {
+            DestPos = OverrideDestPos;
+            OverrideDestPos = new Vector2();
+        }
+        else DestPos = new Vector2(followingObject.GetComponent<Transform>().position.x, DestPos.y);
 		
         //Move Towards Destination
         if(new Vector2(trans.position.x, trans.position.y) != DestPos)
         {
             //Move Position
-            trans.position += new Vector3(SpeedPercent * (DestPos.x - trans.position.x), SpeedPercent * (DestPos.y - trans.position.y));
+            trans.position += new Vector3(SpeedPercent * (DestPos.x - trans.position.x), 0); // SpeedPercent * (DestPos.y - trans.position.y)); (Y-AXIS CURRENTLY LOCKED)
 
             //Set Position Once Within Min Move
             /*if(Mathf.Abs(DestPos.x - trans.position.x) < PhysicsObject.minMove) //Horizontal
@@ -55,4 +61,9 @@ public class CameraController : MonoBehaviour {
 
         //trans.position = new Vector3(DestPos.x, DestPos.y, trans.position.z);
 	}
+
+    public void CameraPosFollow(Vector3 DestPosition)
+    {
+        OverrideDestPos = DestPosition;
+    }
 }

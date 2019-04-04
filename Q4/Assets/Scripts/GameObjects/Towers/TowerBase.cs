@@ -24,6 +24,9 @@ public class TowerBase : Tower
         //Run Parent Start
         base.Start();
 
+
+        //Color Children
+        SetColor(sr.color);
     }
 
     // Update is called once per frame

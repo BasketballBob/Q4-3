@@ -32,6 +32,9 @@ public class PeaShooter : Tower
         TurretHead.GetComponent<SpriteRenderer>().sprite = HeadSprite;
         TurretHead.GetComponent<SpriteRenderer>().sortingOrder = -4;
         Children.Add(TurretHead);
+
+        //Color Children
+        SetColor(sr.color);
     }
 
     // Update is called once per frame
