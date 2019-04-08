@@ -51,8 +51,12 @@ public class Player : MonoBehaviour {
     int TowerArrayMax = 10;
     int TowerArrayCount = 5;
     int SelectedInst = -1; //Set by ManageRadialUI() and used to determine the selected option
+    bool BuildActive;
+    bool BuildPrev;
     float BuildAlarm = 0;
     float BuildTime = 2f;
+    bool EditActive;
+    bool EditPrev;
     float EditAlarm = 0;
     float EditTime = 2f;
     Color BuildRed = new Color(1f, 0f, 0f);
@@ -137,34 +141,46 @@ public class Player : MonoBehaviour {
         //TESTING PLAYER CURRENCY
         //Debug.Log(Cash);
 
+        //Manage UI Housekeeping Variables (For Switching On And Off UI)
+        if(BuildActive != BuildPrev || EditActive != EditPrev)
+        {
+            //Reset Input Alarms
+            BuildAlarm = BuildTime;
+            EditAlarm = EditTime;
+
+            //Destroy Unwanted Reference Tower
+            if (ConstructingTower != null)
+            {
+                Destroy(ConstructingTower);
+            }
+        }
+        BuildPrev = BuildActive;
+        EditPrev = EditActive;
+        BuildActive = false;
+        EditActive = false;
+
         //Active Tower Construction UI
         if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
             ManageTowerConstructionUI(TowerArrayCount, BuildTower);
             Suspended = true;
+
+            BuildActive = true;
         }
         //Active Tower Editing UI
         else if(EditUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
             ManageTowerEditingUI(TowerArrayCount, BuildTower);
             Suspended = true;
+
+            EditActive = true;
         }
         //Deactivated Tower UI
         else
         {
             //Turn Off UI and Free Player
             ManageRadialUI(false, trans.position, 0);
-            Suspended = false;
-
-            //Reset Input Alarms
-            BuildAlarm = BuildTime;
-            EditAlarm = EditTime;
-
-            //Destroy Unwanted Reference Tower
-            if(ConstructingTower != null)
-            {
-                Destroy(ConstructingTower);
-            }
+            Suspended = false;            
         }
 
    
@@ -350,7 +366,8 @@ public class Player : MonoBehaviour {
         SetRadialUISprites(tr.EditingUISprites);
       
         //Determine Interactable Tower
-        if (EditingTower == null && col.NearestCollider(trans.position.x, trans.position.y, 3) != null)
+        if (EditingTower == null && col.NearestCollider(trans.position.x, trans.position.y, 3) != null
+        && !col.NearestCollider(trans.position.x, trans.position.y, 3).GetComponent<Tower>().Activated)
         {
             EditingTower = col.NearestCollider(trans.position.x, trans.position.y, 3);
         }
