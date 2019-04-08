@@ -53,6 +53,8 @@ public class Player : MonoBehaviour {
     int SelectedInst = -1; //Set by ManageRadialUI() and used to determine the selected option
     float BuildAlarm = 0;
     float BuildTime = 2f;
+    float EditAlarm = 0;
+    float EditTime = 2f;
     Color BuildRed = new Color(1f, 0f, 0f);
     Color BuildGreen = new Color(0f, 1f, 0f);
     float ReferenceAlpha = .5f;
@@ -144,16 +146,19 @@ public class Player : MonoBehaviour {
         //Active Tower Editing UI
         else if(EditUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
         {
-            ManageTowerEditingUI(TowerArrayCount);
+            ManageTowerEditingUI(TowerArrayCount, BuildTower);
             Suspended = true;
         }
         //Deactivated Tower UI
         else
         {
-            //ManageTowerConstructionUI(false, TowerArrayCount, BuildTower);
-            //ManageTowerEditingUI(false, )\
+            //Turn Off UI and Free Player
             ManageRadialUI(false, trans.position, 0);
             Suspended = false;
+
+            //Reset Input Alarms
+            BuildAlarm = BuildTime;
+            EditAlarm = EditTime;
 
             //Destroy Unwanted Reference Tower
             if(ConstructingTower != null)
@@ -336,7 +341,7 @@ public class Player : MonoBehaviour {
              
     }//MANAGE TOWER CONSTRUCTION UI
 
-    void ManageTowerEditingUI(int CurrentCount)
+    void ManageTowerEditingUI(int CurrentCount, bool InputPositive)
     {
         //Reference Variables
         GameObject EditingTower = null;
@@ -365,6 +370,23 @@ public class Player : MonoBehaviour {
             //Focus Camera On Edited Tower
             playerCamera.CameraPosFollow(tvTrans.position);
 
+            //Select Option (INPUT)
+            bool OptionCompleted = false;
+            if (InputPositive)
+            {
+                //Deduct Alarm
+                if (EditAlarm - Time.deltaTime > 0)
+                {
+                    EditAlarm -= Time.deltaTime;
+                }
+                else EditAlarm = 0;
+
+                //Show Visual UI Change
+                RadialUISelectionEffect(SelectedInst, EditAlarm, EditTime);
+            }
+            else EditAlarm = EditTime;
+
+
             //Input Options
             //0 - Delete
             //1 - 
@@ -373,6 +395,11 @@ public class Player : MonoBehaviour {
             if(SelectedInst == 0)
             {
 
+                //Finish Operation
+                if(OptionCompleted)
+                {
+
+                }
             }
         }
 
