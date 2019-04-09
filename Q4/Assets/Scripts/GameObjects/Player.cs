@@ -160,7 +160,7 @@ public class Player : MonoBehaviour {
         EditActive = false;
 
         //Active Tower Construction UI
-        if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
+        if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !UIReset)
         {
             ManageTowerConstructionUI(TowerArrayCount, BuildTower);
             Suspended = true;
@@ -168,7 +168,7 @@ public class Player : MonoBehaviour {
             BuildActive = true;
         }
         //Active Tower Editing UI
-        else if(EditUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
+        else if(EditUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !UIReset)
         {
             ManageTowerEditingUI(TowerArrayCount, BuildTower);
             Suspended = true;
@@ -367,7 +367,7 @@ public class Player : MonoBehaviour {
       
         //Determine Interactable Tower
         if (EditingTower == null && col.NearestCollider(trans.position.x, trans.position.y, 3) != null
-        && !col.NearestCollider(trans.position.x, trans.position.y, 3).GetComponent<Tower>().Activated)
+        && col.NearestCollider(trans.position.x, trans.position.y, 3).GetComponent<Tower>().Activated)
         {
             EditingTower = col.NearestCollider(trans.position.x, trans.position.y, 3);
         }
@@ -387,16 +387,28 @@ public class Player : MonoBehaviour {
             //Focus Camera On Edited Tower
             playerCamera.CameraPosFollow(tvTrans.position);
 
+            //Lock Axis On Positive Input
+            if(InputPositive)
+            {
+                LockAxis = true;
+                LockAxis2 = true;
+            }
+
             //Select Option (INPUT)
             bool OptionCompleted = false;
-            if (InputPositive)
+            if (InputPositive) // && SelectedInst != -1)
             {
                 //Deduct Alarm
                 if (EditAlarm - Time.deltaTime > 0)
                 {
                     EditAlarm -= Time.deltaTime;
                 }
-                else EditAlarm = 0;
+                else
+                {
+                    OptionCompleted = true;
+                    EditAlarm = 0;
+                }
+                
 
                 //Show Visual UI Change
                 RadialUISelectionEffect(SelectedInst, EditAlarm, EditTime);
@@ -415,8 +427,14 @@ public class Player : MonoBehaviour {
                 //Finish Operation
                 if(OptionCompleted)
                 {
-
+                    Destroy(EditingTower);
                 }
+            }
+
+            //Complete Option
+            if(OptionCompleted)
+            {
+                EditAlarm = EditTime;
             }
         }
 
