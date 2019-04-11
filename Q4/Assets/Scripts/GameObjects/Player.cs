@@ -29,6 +29,10 @@ public class Player : MonoBehaviour {
     //Input Variables
     bool LockAxis = false;
     bool LockAxis2 = false;
+    bool TowerUI;
+    bool prevTowerUI;
+    bool EditUI;
+    bool prevEditUI;
     float xAxis = 0f;
     float yAxis = 0f;
     float xAxis2 = 0f;
@@ -45,12 +49,14 @@ public class Player : MonoBehaviour {
     float attackTime = 1f;
 
     //Construction UI Vars
-    bool TowerUIInitialized = false;
+    bool TowerUIInitialized;
+    bool ResetUI;
     GameObject[] TowerUIArray;
     float TowerUIOffSetDist = 2;
     int TowerArrayMax = 10;
     int TowerArrayCount = 5;
     int SelectedInst = -1; //Set by ManageRadialUI() and used to determine the selected option
+    int LastActive = 0;
     bool BuildActive;
     bool BuildPrev;
     float BuildAlarm = 0;
@@ -128,8 +134,10 @@ public class Player : MonoBehaviour {
             yAxis2 = Input.GetAxis("Vertical2");
         }
         else LockAxis2 = false;
-        bool TowerUI = Mathf.Round(Input.GetAxis("LeftTrigger")) > 0;
-        bool EditUI = Mathf.Round(Input.GetAxis("RightTrigger")) > 0;
+        prevTowerUI = TowerUI;
+        prevEditUI = EditUI;
+        TowerUI = Mathf.Round(Input.GetAxis("LeftTrigger")) > 0;
+        EditUI = Mathf.Round(Input.GetAxis("RightTrigger")) > 0;
         bool BuildTower = Input.GetKey(KeyCode.Joystick1Button0);
 
 
@@ -152,28 +160,49 @@ public class Player : MonoBehaviour {
             if (ConstructingTower != null)
             {
                 Destroy(ConstructingTower);
-            }
+            }            
         }
         BuildPrev = BuildActive;
         EditPrev = EditActive;
         BuildActive = false;
         EditActive = false;
 
+        //Force Reset UI (Sorry it's so messy)
+        if(ResetUI)
+        {
+            //Last Active Values (Input)
+            //NOTE: Used to temporarily turn of UI
+            //and require the player to reinput 
+            //0 - TowerUI
+            //1 - EditUI 
+
+            //Reset UI On New Input
+            if(LastActive == 0 && TowerUI && !prevTowerUI
+            || LastActive == 0 && EditUI && !prevEditUI
+            || LastActive == 1 && EditUI && !prevEditUI
+            || LastActive == 1 && TowerUI && !prevTowerUI)
+            {
+                ResetUI = false;
+            }
+        }
+
         //Active Tower Construction UI
-        if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !UIReset)
+        if (TowerUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !ResetUI)
         {
             ManageTowerConstructionUI(TowerArrayCount, BuildTower);
             Suspended = true;
 
             BuildActive = true;
+            LastActive = 0;
         }
         //Active Tower Editing UI
-        else if(EditUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !UIReset)
+        else if(EditUI && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && !ResetUI)
         {
             ManageTowerEditingUI(TowerArrayCount, BuildTower);
             Suspended = true;
 
             EditActive = true;
+            LastActive = 1;
         }
         //Deactivated Tower UI
         else
@@ -332,6 +361,9 @@ public class Player : MonoBehaviour {
 
                         //Detach Instance From Reference
                         ConstructingTower = null;
+
+                        //Reset UI
+                        ResetUI = true;
                            
                         //Reset Build Alarm
                         BuildAlarm = BuildTime;
@@ -423,11 +455,15 @@ public class Player : MonoBehaviour {
             //Delete Tower
             if(SelectedInst == 0)
             {
+                //Fade Out Tower
+                tvTower.SetColor(new Color(1f, 1f, 1f,
+                (EditAlarm / EditTime)));
 
                 //Finish Operation
                 if(OptionCompleted)
                 {
                     Destroy(EditingTower);
+                    ResetUI = true;
                 }
             }
 
