@@ -450,7 +450,7 @@ public class Player : MonoBehaviour {
 
             //Input Options
             //0 - Delete
-            //1 - 
+            //1 - Upgrade 
 
             //Delete Tower
             if(SelectedInst == 0)

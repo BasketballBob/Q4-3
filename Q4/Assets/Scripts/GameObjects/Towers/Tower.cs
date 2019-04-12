@@ -15,11 +15,11 @@ public class Tower : MonoBehaviour {
     //Tower Variables
     public int Cost = 30;
     public bool Activated = true;
-    public Vector3 ShotOffset = new Vector3(0, 2.5f);
     public float Range = 15;
     public float AttackTime = 1f;
     [System.NonSerialized] public float AttackAlarm;
     public float BulletSpeed = 20f;
+    public GameObject UpgradeTower;
 
     //Define Reference Variables
     public virtual void OnEnable()

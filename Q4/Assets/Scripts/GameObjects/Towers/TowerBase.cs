@@ -43,7 +43,7 @@ public class TowerBase : Tower
         {
 
             //Check If Target Is Within Range
-            if (Collider.TransDist(trans.position + ShotOffset, target.GetComponent<Transform>().position) <= Range)
+            if (Collider.TransDist(trans.position, target.GetComponent<Transform>().position) <= Range)
             {
                 //Attack Target
                 if (AttackAlarm <= 0)
