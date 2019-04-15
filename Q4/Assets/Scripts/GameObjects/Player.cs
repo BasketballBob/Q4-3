@@ -393,6 +393,7 @@ public class Player : MonoBehaviour {
     {
         //Reference Variables
         GameObject EditingTower = null;
+        GameObject ReferenceTower = null;
 
         //Set Radial UI Sprites
         SetRadialUISprites(tr.EditingUISprites);
@@ -467,12 +468,26 @@ public class Player : MonoBehaviour {
                 }
             }
 
+            //Upgrade Tower
+            else if(SelectedInst == 1)
+            {
+                
+            }
+
             //Complete Option
             if(OptionCompleted)
             {
                 EditAlarm = EditTime;
             }
         }
+
+        //Manage Opaque Tower Reference
+        if(ConstructingTower != null || ReferenceTower != null)
+        {
+
+            //Destroy Unecessary Tower 
+        }
+      
 
     }//MANAGE TOWER EDITING UI
 
