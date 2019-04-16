@@ -485,7 +485,7 @@ public class Player : MonoBehaviour {
         if(ConstructingTower != null || ReferenceTower != null)
         {
 
-            //Destroy Unecessary Tower 
+            //Destroy Unecessary Tower Reference  
         }
       
 
