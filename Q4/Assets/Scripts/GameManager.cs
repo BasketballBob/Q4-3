@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     public GameObject Base;
     Transform BasePos;
     Collider BaseCol;
+    EnemyRepository er;
 
     //Game Manager Variables
     public int Health = 10;
@@ -16,11 +17,12 @@ public class GameManager : MonoBehaviour {
 
     //Wave Manager Variables
     SemiWave[] SpawnWave;
+    public Vector2 SpawnPos;
     int SpawnWaveCap = 100;
-    int SpawnWavePos = 0;
+    [SerializeField] int SpawnWavePos = 0;
     int PrevSpawnWavePos = 0;
-    int SemiWavePos = 0;
-    float SpawnAlarm = 0;
+    [SerializeField] int SemiWavePos = 0;
+    [SerializeField] float SpawnAlarm = 0;
     public struct SemiWave
     {
         public GameObject EnemyObject;
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour {
             DeployRate = deployRate;
 
             //Set Variable Defaults
-            Defined = false;
+            Defined = true;
         }
     }
 
@@ -44,6 +46,8 @@ public class GameManager : MonoBehaviour {
     //Define Reference Variables
     private void OnEnable()
     {
+        //Define General Reference Variables
+        er = GetComponent<EnemyRepository>();
 
         //Initialize Base Object
         if (Base.GetComponent<Collider>() == null)
@@ -60,6 +64,10 @@ public class GameManager : MonoBehaviour {
 
         //Define SpawnWave Array
         SpawnWave = new SemiWave[SpawnWaveCap];
+
+        //Test Wave Spawning 
+        SpawnWave[0] = new SemiWave(er.NormalBaby, 10, .5f);
+        SpawnWave[1] = new SemiWave(er.NormalBaby, 20, 1f);
 
         //Set Enemy Follow Pos
         Enemy.FollowPos = new Vector2(BasePos.position.x, BasePos.position.y);
@@ -85,9 +93,7 @@ public class GameManager : MonoBehaviour {
         //Manage Enemy Spawning
         if(SpawnWave != null)
         {
-            //Set Previous Variables
-            PrevSpawnWavePos = SpawnWavePos;
-
+  
             //Spawn Existing Semiwaves
             if (SpawnWave[SpawnWavePos].Defined == true)
             {
@@ -97,27 +103,40 @@ public class GameManager : MonoBehaviour {
                     SpawnAlarm = SpawnWave[SemiWavePos].DeployRate;
                     SemiWavePos = 0;
                 }
+                PrevSpawnWavePos = SpawnWavePos;
 
                 //Deduct Semiwave Alarm
-                if(SpawnAlarm-Time.deltaTime > 0)
+                if (SpawnAlarm-Time.deltaTime > 0)
                 {
                     SpawnAlarm -= Time.deltaTime;
                 }
                 //Spawn Enemy 
                 else
-                {
-
+                {                  
                     //Advance SemiWave Pos 
                     if(SemiWavePos < SpawnWave[SpawnWavePos].DeployCount)
                     {
+                        //Spawn Enemy
+                        GameObject tvInst = Instantiate(SpawnWave[SpawnWavePos].EnemyObject);
+                        tvInst.GetComponent<Transform>().position = SpawnPos;
+
+                        //Reset Alarm
+                        SpawnAlarm = SpawnWave[SpawnWavePos].DeployRate;
+
+                        //Move On To Next Instance To Spawn
                         SemiWavePos++;
                     }
                     else
                     {
+                        //Turn Off Used Semiwave
+                        SpawnWave[SpawnWavePos].Defined = false;
+
+                        //Move On To Next Semiwave
                         SpawnWavePos++;
                     }
                 }
             }
-        }
+        
+        }//MANAGE ENEMY SPAWNING
 	}
 }

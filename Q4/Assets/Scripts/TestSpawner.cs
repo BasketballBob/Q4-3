@@ -9,6 +9,7 @@ public class TestSpawner : MonoBehaviour {
     public GameObject spawnObject;
 
     //Spawner Variables
+    public bool Enabled = true;
     float spawnAlarm = 0;
     public float spawnTime = 3f;
 
@@ -20,17 +21,21 @@ public class TestSpawner : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		
-        //Deduct Spawn Alarm
-        if(spawnAlarm-Time.deltaTime > 0)
+
+        //Only Spawn If Enabled
+        if (Enabled)
         {
-            spawnAlarm -= Time.deltaTime;
-        }
-        //Create Spawner Gameobject
-        else
-        {
-            Instantiate(spawnObject, trans.position, Quaternion.identity);
-            spawnAlarm = spawnTime;
+            //Deduct Spawn Alarm
+            if (spawnAlarm - Time.deltaTime > 0)
+            {
+                spawnAlarm -= Time.deltaTime;
+            }
+            //Create Spawner Gameobject
+            else
+            {
+                Instantiate(spawnObject, trans.position, Quaternion.identity);
+                spawnAlarm = spawnTime;
+            }
         }
 	}
 }

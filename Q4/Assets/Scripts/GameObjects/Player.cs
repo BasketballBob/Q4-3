@@ -109,9 +109,17 @@ public class Player : MonoBehaviour {
         }
         
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    //DEBUGGING UI
+    private void OnGUI()
+    {
+        GUIStyle testStyle = new GUIStyle();
+        testStyle.fontSize = 50;
+        GUI.Label(new Rect(100, 100, 200, 50), Cash.ToString(), testStyle);
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         //Input Variables
         bool up = Input.GetKey(KeyCode.UpArrow);

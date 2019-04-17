@@ -36,12 +36,18 @@ public class Collider : MonoBehaviour {
         //Add Self To Collider List
         ColliderList.Add(this);
 
-        //Set Automatic Dimensions
-        if (sr != null)
+        //Set Automatic Width
+        if(width == 0 && sr != null)
         {
             width = sr.bounds.size.x;
+        }
+
+        //Set Automatic Height
+        if (height == 0 && sr != null)
+        {            
             height = sr.bounds.size.y;
         }
+
     }
 	
 	// Update is called once per frame

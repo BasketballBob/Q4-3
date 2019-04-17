@@ -16,6 +16,10 @@ public class PhysicsObject : MonoBehaviour {
     public bool DestroyOnContact = false;
     public bool CeaseHSpeedOnGround = false;
 
+    //Collider Variables
+    public float ColliderWidth;
+    public float ColliderHeight;
+
     //Physics Object Variables   
     public float hSpeed;
     public float vSpeed;
@@ -26,13 +30,23 @@ public class PhysicsObject : MonoBehaviour {
     //Define Reference Variables
     void OnEnable()
     {
+        //Define Reference Variables
         trans = GetComponent<Transform>();
         col = gameObject.AddComponent<Collider>();
         col.CollisionType = CollisionType;
+       
     }
 
-	// Update is called once per frame
-	void Update () {
+    //Initialize Variables
+    private void Start()
+    {
+        //Set Collider Size (Optional Overriding)
+        if (ColliderWidth != 0) col.width = ColliderWidth;
+        if (ColliderHeight != 0) col.height = ColliderHeight;
+    }
+
+    // Update is called once per frame
+    void Update () {
 
         //Set To Destroy
         //(used to destroy after collision)

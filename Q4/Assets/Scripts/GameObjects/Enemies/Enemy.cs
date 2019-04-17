@@ -5,28 +5,41 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     //Reference Variables
-    Transform trans;
-    PhysicsObject po;
+    [System.NonSerialized] public Transform trans;
+    [System.NonSerialized] public SpriteRenderer sr;
+    [System.NonSerialized] public PhysicsObject po;
+    [System.NonSerialized] public Animator anim;
 
     //Modifiable Variables
-    public bool FollowAI = false;
+    public bool FollowAI = true;
+    public bool CanJump = true;
 
     //Enemy Variables
-    public int health;
+    public int health = 1;
     public float moveSpeed;
     public float jumpSpeed;
     public static Vector2 FollowPos;
 
+
     //Define Reference Vars
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         trans = GetComponent<Transform>();
+        sr = GetComponent<SpriteRenderer>();
         po = GetComponent<PhysicsObject>();
+        anim = GetComponent<Animator>();
+    }
+
+    //Initialize Variables
+    public virtual void Start()
+    {
+
     }
 
     // Update is called once per frame
-    void Update () {
-		
+    public virtual void Update ()
+    {
+        
         //Following AI
         if(FollowAI)
         {
@@ -36,7 +49,7 @@ public class Enemy : MonoBehaviour {
 
                 //Jump If Obstacle In Way
                 if(po.PlaceMeeting(trans.position.x+PhysicsObject.minMove*po.Sign(FollowPos.x - trans.position.x), trans.position.y, 0)
-                && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0))
+                && po.PlaceMeeting(trans.position.x, trans.position.y - PhysicsObject.minMove, 0) && CanJump)
                 {
                     po.vSpeed = jumpSpeed;
                 }
