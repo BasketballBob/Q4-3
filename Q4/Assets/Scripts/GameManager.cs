@@ -66,8 +66,9 @@ public class GameManager : MonoBehaviour {
         SpawnWave = new SemiWave[SpawnWaveCap];
 
         //Test Wave Spawning 
-        SpawnWave[0] = new SemiWave(er.NormalBaby, 10, .5f);
-        SpawnWave[1] = new SemiWave(er.NormalBaby, 20, 1f);
+        SpawnWave[0] = new SemiWave(er.FastBaby, 10, 2f);
+        SpawnWave[1] = new SemiWave(er.NormalBaby, 10, 1f);
+        SpawnWave[2] = new SemiWave(er.FastBaby, 1000, .75f);
 
         //Set Enemy Follow Pos
         Enemy.FollowPos = new Vector2(BasePos.position.x, BasePos.position.y);

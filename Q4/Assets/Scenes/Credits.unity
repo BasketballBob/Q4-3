@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88f29d01cc7ab8c44a17ae9a985e2fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Texture1: {fileID: 21300000, guid: 20bbb1d7b993e7b4382fb127446034da, type: 3}
-  Texture2: {fileID: 21300000, guid: e75ce01b7f32b7246abc745cad7369af, type: 3}
+  Texture1: {fileID: 21300000, guid: 28d30e3286961a74bbe261bdcd8f8bd8, type: 3}
+  Texture2: {fileID: 21300000, guid: 201eb09cf7d94ca478f08b91e49009c8, type: 3}
   Texture3: {fileID: 21300000, guid: bad6a96046e38804dae4fe7579405f5b, type: 3}
 --- !u!1 &1303354789
 GameObject:

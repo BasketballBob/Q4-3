@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -126,6 +127,12 @@ public class Player : MonoBehaviour {
         bool down = Input.GetKey(KeyCode.DownArrow);
         bool right = Input.GetKeyDown(KeyCode.RightArrow);
         bool left = Input.GetKeyDown(KeyCode.LeftArrow);
+
+        //DEVELOPMENT COMMANDS
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            SceneManager.LoadScene("Credits");
+        }
 
         //Controller Input Variables
         //NOTE: The var LockAxis is always reset to false as to automatically 
