@@ -175,7 +175,8 @@ public class Player : MonoBehaviour {
             if (ConstructingTower != null)
             {
                 Destroy(ConstructingTower);
-            }            
+            }           
+
         }
         BuildPrev = BuildActive;
         EditPrev = EditActive;
@@ -419,7 +420,7 @@ public class Player : MonoBehaviour {
         {
             EditingTower = col.NearestCollider(trans.position.x, trans.position.y, 3);
         }
-
+     
         //Edit Interactable Tower
         if (EditingTower != null)
         {
@@ -486,7 +487,7 @@ public class Player : MonoBehaviour {
             //Upgrade Tower
             else if(SelectedInst == 1)
             {
-                
+                ReferenceTower = EditingTower.GetComponent<Tower>().UpgradeTower;
             }
 
             //Complete Option
@@ -494,15 +495,53 @@ public class Player : MonoBehaviour {
             {
                 EditAlarm = EditTime;
             }
+
+            //Destroy Unecessary Tower Reference 1
+            if (ConstructingTower != null)
+            {
+                if (ConstructingTower.GetComponent<SpriteRenderer>().sprite != ReferenceTower.GetComponent<SpriteRenderer>().sprite)
+                {
+                    Destroy(ConstructingTower);
+                }
+            }
+
+            //Create Reference Tower
+            if (ConstructingTower == null && ReferenceTower != null)
+            {
+                ConstructingTower = Instantiate(ReferenceTower);
+                ConstructingTower.GetComponent<Tower>().Activated = false;
+            }
+
+            //Manage Reference Tower
+            if (ConstructingTower != null)
+            {
+                //Set Position
+                ConstructingTower.GetComponent<Transform>().position = new Vector3(tvTrans.position.x, (tvTrans.position.y - tvSR.bounds.size.y / 2)
+                + ConstructingTower.GetComponent<SpriteRenderer>().bounds.size.y / 2, ConstructingTower.GetComponent<Transform>().position.z);
+
+                //Make Editing Tower Invisible
+                tvSR.GetComponent<Tower>().SetColor(new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, .1f));
+
+            }
+            
         }
 
-        //Manage Opaque Tower Reference
-        if(ConstructingTower != null || ReferenceTower != null)
+        //Default Editing Tower Variables
+        if(ConstructingTower == null && EditingTower != null)
         {
-
-            //Destroy Unecessary Tower Reference  
+            //Make Editing Tower Visible
+            SpriteRenderer tvColor = EditingTower.GetComponent<SpriteRenderer>();
+            tvColor.GetComponent<Tower>().SetColor(new Color(tvColor.color.r, tvColor.color.g, tvColor.color.b, 1f));
         }
-      
+
+        //Destroy Unecessary Tower Reference 2
+        if (ConstructingTower != null)
+        {
+            if (ConstructingTower.GetComponent<SpriteRenderer>().sprite != ReferenceTower.GetComponent<SpriteRenderer>().sprite)
+            {
+                Destroy(ConstructingTower);
+            }
+        }
 
     }//MANAGE TOWER EDITING UI
 

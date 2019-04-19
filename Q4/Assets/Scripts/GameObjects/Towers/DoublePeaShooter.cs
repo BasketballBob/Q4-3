@@ -122,5 +122,6 @@ public class DoublePeaShooter : Tower
     {
         //Destroy Extra Tower Components
         Destroy(TurretHead);
+        Destroy(TurretHead2);
     }
 }
