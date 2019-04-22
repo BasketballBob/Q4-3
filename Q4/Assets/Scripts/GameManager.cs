@@ -12,10 +12,10 @@ public class GameManager : MonoBehaviour {
     EnemyRepository er;
 
     //Game Manager Variables
-    public int Health = 10;
-    int HealthCap;
+    public static int Health = 10;
+    public const int HealthCap = 10;
 
-    //Wave Manager Variables
+    //Wave Manager Variablesx
     SemiWave[] SpawnWave;
     public Vector2 SpawnPos;
     int SpawnWaveCap = 100;
@@ -64,6 +64,9 @@ public class GameManager : MonoBehaviour {
 
         //Define SpawnWave Array
         SpawnWave = new SemiWave[SpawnWaveCap];
+
+        //Reset Health
+        Health = HealthCap;
 
         //Test Wave Spawning 
         SpawnWave[0] = new SemiWave(er.FastBaby, 10, 2f);
