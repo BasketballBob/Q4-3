@@ -94,11 +94,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8d2ac56de353240afb3398fd812531, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GranSprite: {fileID: 21300000, guid: 1be2b3877cab9794886768f751261640, type: 3}
   ProjectileReference: {fileID: 1481844612809448, guid: cd6b1d095aba3f24f9d7032cdd0bce15,
     type: 3}
   DirectionalReference: {fileID: 0}
   DirectionalReference2: {fileID: 0}
-  TestTower: {fileID: 1016599417235586, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
+  Cash: 300
 --- !u!114 &496400427605584058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +118,8 @@ MonoBehaviour:
   GravRate: 20
   DestroyOnContact: 0
   CeaseHSpeedOnGround: 1
+  ColliderWidth: 0
+  ColliderHeight: 0
   hSpeed: 0
   vSpeed: 0
 --- !u!114 &2239420085958387071
@@ -131,6 +134,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c0b62c9eab61c4f85a264668c338ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TowerUISprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  EditingUISprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   tr_PeaShooter: {fileID: 1016599417235586, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a,
     type: 3}
-  tr_LaserRay: {fileID: 0}
+  tr_PeaShooter_Sprite: {fileID: 21300000, guid: 1be2b3877cab9794886768f751261640,
+    type: 3}
+  tr_LaserRay: {fileID: 6532254544023700311, guid: 2dab50cefd7ae3048aa7b0b36e72a5b5,
+    type: 3}
+  tr_LaserRay_Sprite: {fileID: 21300000, guid: 1be2b3877cab9794886768f751261640, type: 3}

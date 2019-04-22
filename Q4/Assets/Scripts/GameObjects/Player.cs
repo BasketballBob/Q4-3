@@ -12,10 +12,17 @@ public class Player : MonoBehaviour {
     Collider col;
     TowerRepository tr;
     CameraController playerCamera;
+    public Sprite GranSprite;
+    GameObject GranRef;
+    public Sprite GranHandSprite;
+    GameObject GranHand;
+    public Sprite GranArmSprite;
+    GameObject GranArm;
     public GameObject ProjectileReference;
-    public GameObject DirectionalReference;
-    public GameObject DirectionalReference2;
+    public GameObject DirectionalReference = null;
+    public GameObject DirectionalReference2 = null;
     GameObject ConstructingTower;
+    GameObject EditingTower;
 
     //Tower References
     GameObject[] TowerReferences;
@@ -60,6 +67,7 @@ public class Player : MonoBehaviour {
     int LastActive = 0;
     bool BuildActive;
     bool BuildPrev;
+    bool OptionPossible; //(Used for tower editing) 
     float BuildAlarm = 0;
     float BuildTime = 2f;
     bool EditActive;
@@ -70,6 +78,15 @@ public class Player : MonoBehaviour {
     Color BuildGreen = new Color(0f, 1f, 0f);
     float ReferenceAlpha = .5f;
     float UIAlpha = .5f;
+
+    //Granny Animation Variables
+    Vector2 GranOrigin = new Vector2(0, .5f);
+    Vector2 GranHandPos = new Vector2(0, .4f);
+    Vector2 GranArmPos1 = new Vector2(0, .4f); //(OffSet from PlayerPos)
+    Vector2 GranArmPos2 = new Vector2(.4f, 0); //(OffSet from GranOrigin)
+    float GranDist = .5f;
+    float GranArmDir = 1f;
+    float GranArmLength = 1f;
 
     //Define Reference Variables
     void OnEnable()
@@ -99,6 +116,26 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        //Create Granny Object
+        GranRef = new GameObject();
+        GranRef.AddComponent<SpriteRenderer>();
+        GranRef.GetComponent<SpriteRenderer>().sprite = GranSprite;
+        GranRef.GetComponent<SpriteRenderer>().sortingOrder = sr.sortingOrder-1;
+        //GranRef.GetComponent<SpriteRenderer>().color = new Color(1f, .25f, 1f, 1f);
+
+        //Create Granny Hand
+        GranHand = new GameObject();
+        GranHand.AddComponent<SpriteRenderer>();
+        GranHand.GetComponent<SpriteRenderer>().sprite = GranHandSprite;
+        GranHand.GetComponent<SpriteRenderer>().sortingOrder = sr.sortingOrder;
+
+        //Create Granny Arm
+        GranArm = new GameObject();
+        GranArm.AddComponent<SpriteRenderer>();
+        GranArm.GetComponent<SpriteRenderer>().sprite = GranArmSprite;
+        GranArm.GetComponent<SpriteRenderer>().sortingOrder = sr.sortingOrder-1;
+        GranArmLength = GranArm.GetComponent<SpriteRenderer>().bounds.size.x;
 
         //Define Tower Array
         TowerUIArray = new GameObject[TowerArrayMax];
@@ -170,6 +207,22 @@ public class Player : MonoBehaviour {
             //Reset Input Alarms
             BuildAlarm = BuildTime;
             EditAlarm = EditTime;
+
+            //Reset Editing Tower Visual Vars
+            if(EditingTower != null)
+            {
+                //Reset Opacity
+                EditingTower.GetComponent<Tower>().SetColor(new Color(
+                EditingTower.GetComponent<SpriteRenderer>().color.r,
+                EditingTower.GetComponent<SpriteRenderer>().color.g,
+                EditingTower.GetComponent<SpriteRenderer>().color.b, 1f));
+
+                //Reset Order In Layer 
+                EditingTower.GetComponent<Tower>().SetSortingOrder(-5);
+
+                //Detach Referenced Instance
+                EditingTower = null;
+            }
 
             //Destroy Unwanted Reference Tower
             if (ConstructingTower != null)
@@ -264,6 +317,61 @@ public class Player : MonoBehaviour {
 
         //if (xAxis != prevXAxis) Debug.Log(xAxis + " " + prevXAxis);
 
+        //Manage Granny Animations 
+        if (true)
+        {
+            //Control Granny Hand
+            GranHand.GetComponent<Transform>().position = new Vector3(trans.position.x + GranHandPos.x, 
+            trans.position.y + GranHandPos.y, GranHand.GetComponent<Transform>().position.z);
+
+            //Control Granny Body
+            Transform GranTrans = GranRef.GetComponent<Transform>();
+            if (xAxis != 0 || yAxis != 0)
+            {
+                //Calculate Input Variables
+                float zAxis = Mathf.Sqrt(Mathf.Pow(xAxis, 2) + Mathf.Pow(yAxis, 2)); //(Hypotenuse)
+                float GranXDist = (GranDist / zAxis) * xAxis; // (xAxis / (Mathf.Abs(xAxis) + Mathf.Abs(yAxis)));
+                float GranYDist = (GranDist / zAxis) * yAxis; // (yAxis / (Mathf.Abs(xAxis) + Mathf.Abs(yAxis)));
+
+                //Set Grandmother Position               
+                GranTrans.position = new Vector3(trans.position.x + GranOrigin.x + GranXDist,
+                trans.position.y + GranOrigin.y + GranYDist, GranTrans.position.z);
+
+                //Set Granny Direction
+                if (xAxis < 0) //RIGHT
+                {
+                    GranRef.GetComponent<SpriteRenderer>().flipX = false;
+                    GranHand.GetComponent<SpriteRenderer>().flipX = false;
+                    GranArmDir = -1;
+                }
+                else if (xAxis > 0) //LEFT
+                {
+                    GranRef.GetComponent<SpriteRenderer>().flipX = true;
+                    GranHand.GetComponent<SpriteRenderer>().flipX = true;
+                    GranArmDir = 1;
+                }
+            }
+            else
+            {
+                //Set Grandmother Position
+                GranTrans.position = new Vector3(trans.position.x, trans.position.y, trans.position.z)
+                + new Vector3(GranOrigin.x, GranOrigin.y);
+            }
+
+            //Control Granny Arm
+            Transform ArmTrans = GranArm.GetComponent<Transform>();
+            SpriteRenderer ArmSR = GranArm.GetComponent<SpriteRenderer>();
+            Vector2 ArmPos1 = GranArmPos1 + new Vector2(trans.position.x, trans.position.y);
+            Vector2 ArmPos2 = new Vector2(GranArmPos2.x*GranArmDir, GranArmPos2.y) + new Vector2(GranTrans.position.x, GranTrans.position.y);
+            float ArmAngleOffSet = 90;
+            float ArmAngle = (Mathf.Atan2((ArmPos2.x - ArmPos1.x), (ArmPos2.y - ArmPos1.y)) / Mathf.PI) * -180 + ArmAngleOffSet;
+            float ArmLength = Mathf.Sqrt(Mathf.Pow(ArmPos2.x - ArmPos1.x, 2) + Mathf.Pow(ArmPos2.y - ArmPos1.y, 2));
+            if (ArmLength == 0) ArmLength = PhysicsObject.minMove;
+            ArmTrans.position = new Vector3(ArmPos1.x, ArmPos1.y, ArmTrans.position.z);
+            ArmTrans.localScale = new Vector3(ArmLength / GranArmLength, ArmTrans.localScale.y, ArmTrans.localScale.z);
+            ArmTrans.eulerAngles = new Vector3(0f, 0f, ArmAngle);
+        }
+
         //Set Previous Axis Vars (Check For Flicking At Set Interval)
         if (prevUpdateAlarm > 0) prevUpdateAlarm -= Time.deltaTime;
         else
@@ -276,7 +384,6 @@ public class Player : MonoBehaviour {
             prevUpdateAlarm = prevUpdateTime;
         }
 
-
         //Horizontal Movement
         //if (right) po.hSpeed = moveSpeed;
         //else if (left) po.hSpeed = -moveSpeed;
@@ -287,13 +394,18 @@ public class Player : MonoBehaviour {
 
 
         //Manage (Debugging) Directional Reference
-        DirectionalReference.GetComponent<Transform>().position = trans.position;
-        DirectionalReference.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis, xAxis)/Mathf.PI)*180);
-        DirectionalReference.GetComponent<SpriteRenderer>().sortingOrder = 1;
-
-        DirectionalReference2.GetComponent<Transform>().position = trans.position;
-        DirectionalReference2.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis2, xAxis2) / Mathf.PI) * 180);
-        DirectionalReference2.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        if (DirectionalReference != null)
+        {
+            DirectionalReference.GetComponent<Transform>().position = trans.position;
+            DirectionalReference.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis, xAxis) / Mathf.PI) * 180);
+            DirectionalReference.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        }
+        if (DirectionalReference2 != null)
+        {
+            DirectionalReference2.GetComponent<Transform>().position = trans.position;
+            DirectionalReference2.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(yAxis2, xAxis2) / Mathf.PI) * 180);
+            DirectionalReference2.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        }
     }
 
     void ManageTowerConstructionUI(int CurrentCount, bool Building)
@@ -408,12 +520,15 @@ public class Player : MonoBehaviour {
     void ManageTowerEditingUI(int CurrentCount, bool InputPositive)
     {
         //Reference Variables
-        GameObject EditingTower = null;
+        EditingTower = null;
         GameObject ReferenceTower = null;
 
         //Set Radial UI Sprites
         SetRadialUISprites(tr.EditingUISprites);
-      
+
+        //Check To See If Editing Tower Should Have Default Variables
+        bool DefaultEditing = true; //(Use if you want to change the color of editing tower)
+
         //Determine Interactable Tower
         if (EditingTower == null && col.NearestCollider(trans.position.x, trans.position.y, 3) != null
         && col.NearestCollider(trans.position.x, trans.position.y, 3).GetComponent<Tower>().Activated)
@@ -429,7 +544,7 @@ public class Player : MonoBehaviour {
             Transform tvTrans = EditingTower.GetComponent<Transform>();
             SpriteRenderer tvSR = EditingTower.GetComponent<SpriteRenderer>();
             Tower tvTower = EditingTower.GetComponent<Tower>();
-
+           
             //Display Radial Editing UI 
             ManageRadialUI(true, tvTrans.position, CurrentCount);
 
@@ -445,7 +560,7 @@ public class Player : MonoBehaviour {
 
             //Select Option (INPUT)
             bool OptionCompleted = false;
-            if (InputPositive) // && SelectedInst != -1)
+            if (InputPositive && SelectedInst != -1 && OptionPossible)
             {
                 //Deduct Alarm
                 if (EditAlarm - Time.deltaTime > 0)
@@ -468,19 +583,28 @@ public class Player : MonoBehaviour {
             //Input Options
             //0 - Delete
             //1 - Upgrade 
+            OptionPossible = false;
 
             //Delete Tower
-            if(SelectedInst == 0)
+            if (SelectedInst == 0)
             {
                 //Fade Out Tower
                 tvTower.SetColor(new Color(1f, 1f, 1f,
                 (EditAlarm / EditTime)));
 
+                DefaultEditing = false;
+
                 //Finish Operation
-                if(OptionCompleted)
+                if (OptionCompleted)
                 {
                     Destroy(EditingTower);
                     ResetUI = true;
+                }
+
+                //Determine If Possible
+                if(true)
+                {
+                    OptionPossible = true;
                 }
             }
 
@@ -488,6 +612,34 @@ public class Player : MonoBehaviour {
             else if(SelectedInst == 1)
             {
                 ReferenceTower = EditingTower.GetComponent<Tower>().UpgradeTower;
+            
+                //Finish Upgrading 
+                if(OptionCompleted && Cash >= ReferenceTower.GetComponent<Tower>().Cost)
+                {
+                    //Destroy Tower and Prompt UIReset
+                    Destroy(EditingTower);
+                    ResetUI = true;
+
+                    //Deduct Cash
+                    Cash -= ReferenceTower.GetComponent<Tower>().Cost;
+
+                    //Reset Color 
+                    ConstructingTower.GetComponent<Tower>().SetColor(new Color(1f, 1f, 1f, 1f));
+
+                    //Disconnect Instance From Reference
+                    ConstructingTower.GetComponent<Tower>().Activated = true;
+                    ConstructingTower = null;
+                }
+
+                //Determine If Possible
+                if(EditingTower.GetComponent<Tower>() != null)
+                {
+                    if(EditingTower.GetComponent<Tower>().UpgradeTower != null
+                    && Cash >= ReferenceTower.GetComponent<Tower>().Cost)
+                    {
+                        OptionPossible = true;
+                    }
+                }
             }
 
             //Complete Option
@@ -496,49 +648,64 @@ public class Player : MonoBehaviour {
                 EditAlarm = EditTime;
             }
 
-            //Destroy Unecessary Tower Reference 1
-            if (ConstructingTower != null)
-            {
-                if (ConstructingTower.GetComponent<SpriteRenderer>().sprite != ReferenceTower.GetComponent<SpriteRenderer>().sprite)
-                {
-                    Destroy(ConstructingTower);
-                }
-            }
-
             //Create Reference Tower
-            if (ConstructingTower == null && ReferenceTower != null)
+            if (ConstructingTower == null && ReferenceTower != null && !OptionCompleted)
             {
                 ConstructingTower = Instantiate(ReferenceTower);
                 ConstructingTower.GetComponent<Tower>().Activated = false;
             }
 
             //Manage Reference Tower
-            if (ConstructingTower != null)
+            if (ConstructingTower != null && ReferenceTower != null)
             {
                 //Set Position
                 ConstructingTower.GetComponent<Transform>().position = new Vector3(tvTrans.position.x, (tvTrans.position.y - tvSR.bounds.size.y / 2)
                 + ConstructingTower.GetComponent<SpriteRenderer>().bounds.size.y / 2, ConstructingTower.GetComponent<Transform>().position.z);
 
-                //Make Editing Tower Invisible
-                tvSR.GetComponent<Tower>().SetColor(new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, .1f));
+                //Set Order In Layer
+                EditingTower.GetComponent<Tower>().SetSortingOrder(-6);
 
+                //Set Color (Show whether can be built or not)
+                if(Cash >= ReferenceTower.GetComponent<Tower>().Cost)
+                {
+                    //Set Color Green
+                    ConstructingTower.GetComponent<Tower>().SetColor(new Color(1f + (BuildGreen.r-1f)*(EditAlarm/EditTime),
+                    1f + (BuildGreen.g - 1f) * (EditAlarm / EditTime), 1f + (BuildGreen.b - 1f) * (EditAlarm / EditTime), 
+                    ConstructingTower.GetComponent<SpriteRenderer>().color.a));
+                }
+                else
+                {
+                    //Set Color Red
+                    ConstructingTower.GetComponent<Tower>().SetColor(new Color(BuildRed.r,
+                    BuildRed.g, BuildRed.b, ConstructingTower.GetComponent<SpriteRenderer>().color.a));
+                }
+
+                //Make Editing Tower Opaque
+                tvSR.GetComponent<Tower>().SetAlpha(EditAlarm/EditTime);
+
+                //Make Constructing Tower Opaque
+                ConstructingTower.GetComponent<Tower>().SetAlpha(.7f + .3f * ((EditTime - EditAlarm) / EditTime));
             }
             
         }
 
         //Default Editing Tower Variables
-        if(ConstructingTower == null && EditingTower != null)
+        if(ConstructingTower == null && EditingTower != null && DefaultEditing)
         {
             //Make Editing Tower Visible
             SpriteRenderer tvColor = EditingTower.GetComponent<SpriteRenderer>();
             tvColor.GetComponent<Tower>().SetColor(new Color(tvColor.color.r, tvColor.color.g, tvColor.color.b, 1f));
         }
 
-        //Destroy Unecessary Tower Reference 2
+        //Destroy Unecessary Tower Reference
         if (ConstructingTower != null)
         {
-            if (ConstructingTower.GetComponent<SpriteRenderer>().sprite != ReferenceTower.GetComponent<SpriteRenderer>().sprite)
+            if(ReferenceTower == null)
             {
+                Destroy(ConstructingTower);
+            }
+            else if (ConstructingTower.GetComponent<SpriteRenderer>().sprite != ReferenceTower.GetComponent<SpriteRenderer>().sprite)
+            { 
                 Destroy(ConstructingTower);
             }
         }

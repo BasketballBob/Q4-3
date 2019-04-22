@@ -66,4 +66,35 @@ public class Tower : MonoBehaviour {
             element.GetComponent<SpriteRenderer>().color = SetColor;
         }
     }
+
+    public void SetAlpha(float Alpha)
+    {
+        //Reference Variables
+        SpriteRenderer tvSR = GetComponent<SpriteRenderer>();
+
+        //Set Self Alpha
+        tvSR.color = new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, Alpha);
+
+        //Set Child Alpha
+        foreach(GameObject element in Children)
+        {
+            //ReferenceEquals Variable
+            tvSR = element.GetComponent<SpriteRenderer>();
+
+            //Set Child Object Alpha
+            tvSR.color = new Color(tvSR.color.r, tvSR.color.g, tvSR.color.b, Alpha);
+        }
+    }
+
+    public void SetSortingOrder(int SortingOrder)
+    {
+        //Set Self Sorting Order
+        GetComponent<SpriteRenderer>().sortingOrder = SortingOrder;
+
+        //Set Sorting Order Of Children
+        foreach(GameObject element in Children)
+        {
+            element.GetComponent<SpriteRenderer>().sortingOrder = SortingOrder;
+        }
+    }
 }

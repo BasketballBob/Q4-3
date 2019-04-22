@@ -68,7 +68,6 @@ public class DoublePeaShooter : Tower
             tvDistX = target.GetComponent<Transform>().position.x - (HeadPos2.x + trans.position.x);
             tvDistY = target.GetComponent<Transform>().position.y - (HeadPos2.y + trans.position.y);
             TurretHead2.GetComponent<Transform>().eulerAngles = new Vector3(0, 0, (Mathf.Atan2(tvDistY, tvDistX) / Mathf.PI) * 180);
-            Debug.Log(tvDistX + " " + tvDistY);
         }
 
         //Fire At Target 
