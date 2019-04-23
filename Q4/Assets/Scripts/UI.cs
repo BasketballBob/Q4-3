@@ -103,7 +103,6 @@ public class UI : MonoBehaviour
 
         // move the sprite masks
         int y = 10;
-        Debug.Log(y);
         float maskX = HealthRef.transform.localScale.x;
         Vector3 HealthMaskMovment = new Vector3(1, 0, 0);
 

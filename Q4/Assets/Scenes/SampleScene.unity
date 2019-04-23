@@ -299,11 +299,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 37.273
+      value: -0.79
       objectReference: {fileID: 0}
     - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.03
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4875595886249790, guid: 0e2bb18f2b1b27848a19db4d58cf7d8a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -539,6 +539,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1474153609}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &869893335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869893334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e2596f2cd95204b8e42da78adbc43d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fence: {fileID: 21300000, guid: 02849b1ac3ea9a144bbeec194834d7e9, type: 3}
+  Tree: {fileID: 21300000, guid: 8e359b8a99d5fc64b82e68234c576f04, type: 3}
+  City: {fileID: 21300000, guid: 1be2b3877cab9794886768f751261640, type: 3}
 --- !u!114 &869893339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,12 +1064,12 @@ PrefabInstance:
     - target: {fileID: 1806579919212267271, guid: 53db955514657344083000c9bf2d9400,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 38.592247
+      value: 0.52
       objectReference: {fileID: 0}
     - target: {fileID: 1806579919212267271, guid: 53db955514657344083000c9bf2d9400,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.015825748
+      value: -0.9
       objectReference: {fileID: 0}
     - target: {fileID: 1806579919212267271, guid: 53db955514657344083000c9bf2d9400,
         type: 3}
