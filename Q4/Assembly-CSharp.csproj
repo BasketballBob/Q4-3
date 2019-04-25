@@ -69,6 +69,8 @@
     <Compile Include="Assets\Scripts\GameObjects\Enemies\EnemyBase.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Enemies\EnemyRepository.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Enemies\FastEnemy.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\Enemies\FlyingEnemy.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\Enemies\NormalEnemy.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Player.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Projectile.cs" />
     <Compile Include="Assets\Scripts\GameObjects\TowerRepository.cs" />

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5489988111705128327}
   - component: {fileID: 5489988111705128320}
   m_Layer: 0
-  m_Name: FastBaby_walkCycle_0
+  m_Name: FastBaby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 113a7a300e3e55e428d68f3d082bb251, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3291227692335324da073b7bbee40e42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
