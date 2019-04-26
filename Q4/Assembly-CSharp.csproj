@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\GameObjects\Towers\PeaShooter.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Towers\Tower.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Towers\TowerBase.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\Towers\Wall.cs" />
     <Compile Include="Assets\Scripts\ParallaxScrolling.cs" />
     <Compile Include="Assets\Scripts\PhysicsObject.cs" />
     <Compile Include="Assets\Scripts\TestSpawner.cs" />
