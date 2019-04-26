@@ -17,6 +17,7 @@ public class Collider : MonoBehaviour {
     // 1 - Player
     // 2 - Enemy
     // 3 - Tower
+    // 4 - Enemy Wall
 
     //Collider Variables 
     public int CollisionType;
@@ -96,6 +97,17 @@ public class Collider : MonoBehaviour {
                             break;
                         }
                     }
+
+                    //Enemy Exclusive Walls (CollisionType 4)
+                    if(GetComponent<Enemy>() != null && element.CollisionType == 4)
+                    {
+                        //Rectangular Collision
+                        if (RectToRect(this, element))
+                        {
+                            returnVal = true;
+                            break;
+                        }
+                    }
                 }
             }
             //Remove Null Element
@@ -134,6 +146,17 @@ public class Collider : MonoBehaviour {
                 {
                     //Check Only For Input Collider Type
                     if (element.CollisionType == collisionType)
+                    {
+                        //Rectangular Collision
+                        if (RectToRect(this, element))
+                        {
+                            returnVal = element.gameObject;
+                            break;
+                        }
+                    }
+
+                    //Enemy Exclusive Walls (CollisionType 4)
+                    if (GetComponent<Enemy>() != null && element.CollisionType == 4)
                     {
                         //Rectangular Collision
                         if (RectToRect(this, element))

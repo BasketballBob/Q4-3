@@ -22,6 +22,9 @@ public class TowerRepository : MonoBehaviour
     public GameObject tr_LaserRay;
     public Sprite tr_LaserRay_Sprite;
 
+    //Wall 
+    public GameObject tr_Wall;
+    public Sprite tr_Wall_Sprite;
 
     private void Start()
     {
@@ -29,6 +32,7 @@ public class TowerRepository : MonoBehaviour
         //Packup Tower UI Sprite Array
         TowerUISprites[0] = tr_PeaShooter_Sprite;
         TowerUISprites[1] = tr_LaserRay_Sprite;
+        TowerUISprites[2] = tr_Wall_Sprite;
 
         //Packup Editing UI Sprite Array
         for (int i = 0; i < 10; i++)

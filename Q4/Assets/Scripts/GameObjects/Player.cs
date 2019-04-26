@@ -104,7 +104,7 @@ public class Player : MonoBehaviour {
         TowerReferences = new GameObject[TowerArrayMax];
         TowerReferences[0] = tr.tr_PeaShooter;
         TowerReferences[1] = tr.tr_LaserRay;
-        TowerReferences[2] = tr.tr_LaserRay;
+        TowerReferences[2] = tr.tr_Wall;
         TowerReferences[3] = tr.tr_PeaShooter;
         TowerReferences[4] = tr.tr_PeaShooter;
         TowerReferences[5] = tr.tr_PeaShooter;
