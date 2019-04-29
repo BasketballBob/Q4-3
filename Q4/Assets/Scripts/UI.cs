@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    public int x;
     // BHealth;
     int MaxHealth;
     // Defining all the varibles for text
@@ -22,8 +21,9 @@ public class UI : MonoBehaviour
     public Vector3 Toffest,Hoffset,Poffset,HMoffset,PMoffset, BHBoffset, PBBoffset, Coinoffset;
     //Game object
     //public GameObject BaseHealthBar, Tower, WaveProgressBar,ProgressMask,HealthMask;
-    public Sprite BaseHealthBar, Tower, WaveProgressBar, HealthMask, ProgressMask, HealthMaskBackground, ProgressMaskBackground, Coin; 
-    GameObject HealthRef, TowerRef, ProgressRef, ProgressMaskRef, HealthMaskRef, HealthMaskBackgroundRef, ProgressMaskBackgroundRef, CoinRef;
+    public GameObject HealthMask, ProgressMask;
+    public Sprite BaseHealthBar, Tower, WaveProgressBar, HealthBackground, ProgressBackground, Coin; 
+    GameObject HealthRef, TowerRef, ProgressRef, ProgressMaskRef, HealthMaskRef, HealthBackgroundRef, ProgressBackgroundRef, CoinRef;
 
     Transform ts;
     //curency, health, and wave varibles
@@ -51,33 +51,46 @@ public class UI : MonoBehaviour
     void Start()
     {
        ts=GetComponent<Transform>();
-       
+        ProgressMaskRef = Instantiate(ProgressMask);
+        HealthMaskRef = Instantiate(HealthMask);
 
         //Create The GameObjects (Julien)
+        //Health Bar full
         HealthRef = new GameObject();
         HealthRef.AddComponent<SpriteRenderer>();
+        HealthRef.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         HealthRef.GetComponent<SpriteRenderer>().sprite = BaseHealthBar;
+        //Tower
         TowerRef = new GameObject();
         TowerRef.AddComponent<SpriteRenderer>();
         TowerRef.GetComponent<SpriteRenderer>().sprite = Tower;
+        //Wave Progress bar full
         ProgressRef = new GameObject();
         ProgressRef.AddComponent<SpriteRenderer>();
+        ProgressRef.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
         ProgressRef.GetComponent<SpriteRenderer>().sprite = WaveProgressBar;
+        /*Progress bar sprite mask... NOT WORKING!!
         ProgressMaskRef = new GameObject();
         ProgressMaskRef.AddComponent<SpriteMask>();
-        ProgressMaskRef.GetComponent<SpriteMask>().sprite = HealthMask;
-        ProgressMaskBackgroundRef = new GameObject();
-        ProgressMaskBackgroundRef.AddComponent<SpriteMask>();
-        ProgressMaskBackgroundRef.GetComponent<SpriteMask>().sprite = ProgressMaskBackground;
+        ProgressMaskRef.GetComponent<SpriteMask>().sprite = ProgressMask;
+        //Health sprite mask... NOT WORKING!!
         HealthMaskRef = new GameObject();
         HealthMaskRef.AddComponent<SpriteMask>();
         HealthMaskRef.GetComponent<SpriteMask>().sprite = HealthMask;
-        HealthMaskBackgroundRef = new GameObject();
-        HealthMaskBackgroundRef.AddComponent<SpriteMask>();
-        HealthMaskBackgroundRef.GetComponent<SpriteMask>().sprite = HealthMaskBackground;
+        */
+        //Progressbar background this is what the palyer will see at the satrt of the game a bar that is not filled
+        ProgressBackgroundRef = new GameObject();
+        ProgressBackgroundRef.AddComponent<SpriteRenderer>();
+        ProgressBackgroundRef.GetComponent<SpriteRenderer>().sprite = ProgressBackground;
+
+       //Health background this is what palyers will see if the base takes damage.
+        HealthBackgroundRef = new GameObject();
+        HealthBackgroundRef.AddComponent<SpriteRenderer>();
+        HealthBackgroundRef.GetComponent<SpriteRenderer>().sprite = HealthBackground;
+        //Coin 
         CoinRef = new GameObject();
-        CoinRef.AddComponent<SpriteMask>();
-        CoinRef.GetComponent<SpriteMask>().sprite = Coin;
+        CoinRef.AddComponent<SpriteRenderer>();
+        CoinRef.GetComponent<SpriteRenderer>().sprite = Coin;
     }
 
     // Update is called once per frame
@@ -89,7 +102,8 @@ public class UI : MonoBehaviour
         Vector3 ProgressRefCam = new Vector3(ts.position.x, ts.position.y, ProgressRef.transform.position.z);
         Vector3 ProgressMaskRefCam = new Vector3(ts.position.x, ts.position.y, ProgressMaskRef.transform.position.z);
         Vector3 HealthMaskRefCam = new Vector3(ts.position.x, ts.position.y, HealthMaskRef.transform.position.z);
-      
+        Vector3 BackgroundHealthRefCam = new Vector3(ts.position.x, ts.position.y, HealthBackgroundRef.transform.position.z);
+        Vector3 BackgroundProgressRefCam = new Vector3(ts.position.x, ts.position.y, ProgressBackgroundRef.transform.position.z);
         Vector3 CoinCam = new Vector3(ts.position.x, ts.position.y, CoinRef.transform.position.z);
 
         //Move the game objects reltive to the camrea
@@ -98,9 +112,11 @@ public class UI : MonoBehaviour
         HealthRef.transform.position=(HealthRefCam+Hoffset);
         ProgressMaskRef.transform.position = (ProgressMaskRefCam + PMoffset);
         HealthMaskRef.transform.position = (HealthMaskRefCam + HMoffset);
- 
+        HealthBackgroundRef.transform.position = (HealthMaskRefCam + BHBoffset);
+        ProgressBackgroundRef.transform.position = (HealthMaskRefCam + PBBoffset);
         CoinRef.transform.position = (CoinCam + Coinoffset);
-        // move the sprite masks
+        
+        // move the health sprite mask
        
         float maskX = HealthRef.transform.localScale.x;
         Vector3 HealthMaskMovment = new Vector3(1, 0, 0);
@@ -113,7 +129,8 @@ public class UI : MonoBehaviour
         
         Vector3 MaskPos = new Vector3(HealthBarPos.x - HealthRatio * HealthBarWidth, HealthBarPos.y, HealthBarPos.z);
         HealthMaskRef.transform.position = MaskPos;
-
+      
+        //move the progress sprite mask
 
     }
 }

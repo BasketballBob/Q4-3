@@ -714,34 +714,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56782eb667b17aa479d76ca9152c717d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 0
-  cx: 0
-  cy: 0
-  cw: 0
-  ch: 0
-  wx: 0
-  wy: 0
-  ww: 0
-  wh: 0
-  Defultfont: {fileID: 0}
-  WaveFont: {fileID: 0}
-  fontSize: 0
-  Toffest: {x: 0, y: 0, z: 0}
-  Hoffset: {x: 0, y: 0, z: 0}
-  Poffset: {x: 0, y: 0, z: 0}
-  HMoffset: {x: 0, y: 0, z: 0}
+  cx: 948.13
+  cy: 12.59
+  cw: 100
+  ch: 150
+  wx: 595.98
+  wy: 37.5
+  ww: 100
+  wh: 150
+  Defultfont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+  WaveFont: {fileID: 12800000, guid: 0ad2381069b91e34daa3a4549633d55d, type: 3}
+  fontSize: 40
+  Toffest: {x: -6.05, y: 4, z: 0}
+  Hoffset: {x: -3.27, y: 4, z: 0}
+  Poffset: {x: 1.35, y: 4.21, z: 0}
+  HMoffset: {x: -3.27, y: 4, z: 0}
   PMoffset: {x: 0, y: 0, z: 0}
-  BHBoffset: {x: 0, y: 0, z: 0}
-  PBBoffset: {x: 0, y: 0, z: 0}
-  Coinoffset: {x: 0, y: 0, z: 0}
-  BaseHealthBar: {fileID: 0}
-  Tower: {fileID: 0}
-  WaveProgressBar: {fileID: 0}
-  HealthMask: {fileID: 0}
-  ProgressMask: {fileID: 0}
-  HealthMaskBackground: {fileID: 0}
-  ProgressMaskBackground: {fileID: 0}
-  Coin: {fileID: 0}
+  BHBoffset: {x: -3.27, y: 4, z: 0}
+  PBBoffset: {x: 1.35, y: 4.21, z: 0}
+  Coinoffset: {x: 5.41, y: 4.41, z: 0}
+  HealthMask: {fileID: 5918092794684690010, guid: 6648ac408bbd9b0468cf30bf91a1e8b4,
+    type: 3}
+  ProgressMask: {fileID: 8908933896129494235, guid: 75b4d5a710bb931418a964fc8513e9b0,
+    type: 3}
+  BaseHealthBar: {fileID: 21300002, guid: 7ba5c9978231bbb428aaab12e807b5e6, type: 3}
+  Tower: {fileID: 21300000, guid: 7ba5c9978231bbb428aaab12e807b5e6, type: 3}
+  WaveProgressBar: {fileID: 21300000, guid: 955d2dcaf940b8a41a8e0a0206815894, type: 3}
+  HealthBackground: {fileID: 21300002, guid: 4ebd098d5739a294894221190804bedb, type: 3}
+  ProgressBackground: {fileID: 21300000, guid: e05645825af774a4a92b70a9f545e0f9, type: 3}
+  Coin: {fileID: 21300000, guid: ef8aba996081f064a8bf9b0bcf5457fc, type: 3}
 --- !u!1 &902752094
 GameObject:
   m_ObjectHideFlags: 0

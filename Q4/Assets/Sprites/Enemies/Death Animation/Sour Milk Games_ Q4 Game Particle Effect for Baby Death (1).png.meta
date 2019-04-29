@@ -1,0 +1,288 @@
+fileFormatVersion: 2
+guid: d098f062a7b125242aa4040200a2f6ac
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_0
+    21300002: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_1
+    21300004: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_2
+    21300006: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_3
+    21300008: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_4
+    21300010: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_5
+    21300012: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_11
+    21300014: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_13
+    21300016: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_23
+  externalObjects: {}
+  serializedVersion: 7
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 250
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_0
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 3458
+        width: 84
+        height: 84
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce2bcd03735a1af4baffe3f27ac16471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_1
+      rect:
+        serializedVersion: 2
+        x: 1388
+        y: 3397
+        width: 224
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac259814f2526f044820a17d4b7062b0
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_2
+      rect:
+        serializedVersion: 2
+        x: 2308
+        y: 3317
+        width: 384
+        height: 366
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3e26f13b0b1ad04891ca0ac8e573cc1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_3
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 2278
+        width: 466
+        height: 444
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39ba9b0efbc0b274b9fb08d99c9050f2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_4
+      rect:
+        serializedVersion: 2
+        x: 1228
+        y: 2237
+        width: 544
+        height: 526
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3eb27b786aff7b04a97cde9460f1c640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_5
+      rect:
+        serializedVersion: 2
+        x: 2188
+        y: 2198
+        width: 624
+        height: 604
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 522fe8ec1a1d48747823950d53496323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_11
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 1161
+        width: 704
+        height: 676
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6817ccd4eee46ea4ca4af8c1d3f5e373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_13
+      rect:
+        serializedVersion: 2
+        x: 1117
+        y: 1110
+        width: 766
+        height: 749
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cde8d3100601d3e4da6eae4f0572ddb1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sour Milk Games_ Q4 Game Particle Effect for Baby Death (1)_23
+      rect:
+        serializedVersion: 2
+        x: 2183
+        y: 1157
+        width: 699
+        height: 674
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7522c4152835f334ca3994591d12fd91
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: d05e0e414bb68264ca20673b9916a4c3
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
