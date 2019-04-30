@@ -106,11 +106,6 @@ PlayerSettings:
   xboxOneDisableEsram: 0
   xboxOnePresentImmediateThreshold: 0
   switchQueueCommandMemory: 0
-  switchQueueControlMemory: 16384
-  switchQueueComputeMemory: 262144
-  switchNVNShaderPoolsGranularity: 33554432
-  switchNVNDefaultPoolsGranularity: 16777216
-  switchNVNOtherPoolsGranularity: 16777216
   vulkanEnableSetSRGBWrite: 0
   m_SupportedAspectRatios:
     4:3: 1
@@ -236,7 +231,6 @@ PlayerSettings:
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
-  iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   clonedFromGUID: 5f34be1353de5cf4398729fda238591b
   templatePackageId: com.unity.template.2d@1.0.1
@@ -395,7 +389,6 @@ PlayerSettings:
   switchAllowsRuntimeAddOnContentInstall: 0
   switchDataLossConfirmation: 0
   switchUserAccountLockEnabled: 0
-  switchSystemResourceMemory: 16777216
   switchSupportedNpadStyles: 3
   switchNativeFsCacheSize: 32
   switchIsHoldTypeHorizontal: 0
@@ -567,6 +560,7 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Collab: 1
     UNet: 1
   luminIcon:
     m_Name: 
@@ -587,10 +581,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 2
-  cloudProjectId: 
+  cloudProjectId: 487ecb46-4f22-4a9b-91a6-1fd6bdcc7a36
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Q4
+  organizationId: htace11
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

@@ -41,6 +41,7 @@ public class FlyingEnemy : Enemy
 
     private void OnDestroy()
     {
+        anim.Play("BabyDeathAnimation");
         //Destroy Extra Enemy Components
 
     }

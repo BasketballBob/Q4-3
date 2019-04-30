@@ -36,11 +36,14 @@ public class FastEnemy : Enemy
 
         //Manage Animations 
         anim.Play("FastBaby_walkCycle");
+        
+        //anim.Play("BabyDeathAnimation");
 
     }//UPDATE
 
     private void OnDestroy()
     {
+
         //Destroy Extra Enemy Components
 
     }

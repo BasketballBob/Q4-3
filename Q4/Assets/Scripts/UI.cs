@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +8,10 @@ public class UI : MonoBehaviour
     // Defining all the varibles for text
     public float cx, cy, cw, ch;
     public float wx, wy, ww, wh;
-
-
-    float Health = GameManager.Health;
     float HealthCap = GameManager.HealthCap;
+
+    
+   
     
     //varibles for font and font size
     public Font Defultfont, WaveFont;
@@ -118,15 +118,16 @@ public class UI : MonoBehaviour
         currency++;
         wave++;
         float maskX = HealthRef.transform.localScale.x;
+        float Health = GameManager.Health;
 
         Vector3 HealthBarPos = HealthRef.transform.position;
         float HealthBarWidth = HealthRef.GetComponent<SpriteRenderer>().bounds.size.x;
 
-        float HealthRatio = GameManager.Health / GameManager.HealthCap;
+        float HealthRatio = Health / HealthCap;
 
         //Debug.Log("Base Health " +GameManager.Health);
         Vector3 MaskPos = new Vector3(HealthBarPos.x - HealthRatio * HealthBarWidth, HealthBarPos.y, HealthBarPos.z);
-        //HealthMaskRef.transform.position = MaskPos;
+        HealthMaskRef.transform.position = MaskPos;
         //move the progress sprite mask
 
     }

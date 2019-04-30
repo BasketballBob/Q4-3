@@ -42,6 +42,7 @@ public class NormalEnemy : Enemy
 
     private void OnDestroy()
     {
+        anim.Play("BabyDeathAnimation");
         //Destroy Extra Enemy Components
 
     }
